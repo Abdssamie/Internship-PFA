@@ -1,0 +1,613 @@
+// ============================================================
+//  PROTOCOLE D'ANALYSE — DOSAGE DES IONS CHLORURE
+//  Méthode de Mohr — Titrimétrie argentimétrique
+//  Référence normative : ISO 9297:1989(F)
+// ============================================================
+
+// ── Global page settings ────────────────────────────────────
+#set page(
+  paper: "a4",
+  margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
+  numbering: "1 / 1",
+  number-align: right,
+  header: [
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[Protocole — Dosage des Chlorures (ISO 9297:1989)],
+      align(right)[Réf. : *PRO-CHM-001* | Rév. : *1.0*],
+    )
+    #line(length: 100%, stroke: 0.5pt)
+  ],
+  footer: [
+    #line(length: 100%, stroke: 0.5pt)
+    #set text(size: 8pt)
+    #align(center)[#context [Page #counter(page).display() / #counter(page).final().first()]]
+  ],
+)
+
+// ── Typography ───────────────────────────────────────────────
+#set text(font: "STIX Two Text", size: 10.5pt, lang: "fr")
+#show math.equation: set text(font: "STIX Two Math")
+#show raw: set text(font: "Source Code Pro", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set heading(numbering: "1.1.1")
+
+// ── Reusable components ─────────────────────────────────────
+
+// Section heading: full-width rule above, bold black text
+#show heading.where(level: 1): it => {
+  v(1.2em)
+  line(length: 100%, stroke: 1pt)
+  block(above: 0.4em, below: 0.6em)[
+    #set text(size: 13pt, weight: "bold")
+    #it
+  ]
+}
+
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  block(below: 0.4em)[
+    #set text(size: 11pt, weight: "bold")
+    #it
+  ]
+}
+
+// Safety callout — left thick rule, black border, no fill
+#let safety-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: 0.5pt),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚠ #title] \
+    #content
+  ]
+}
+
+// Warning callout — same structure, dashed border
+#let warn-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: (dash: "dashed", thickness: 0.5pt)),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚑ #title] \
+    #content
+  ]
+}
+
+// Informational note — indented, thin border
+#let note-box(content) = {
+  block(
+    width: 100%,
+    stroke: (left: 1.5pt, rest: none),
+    inset: (left: 12pt, right: 0pt, y: 4pt),
+  )[
+    #text(weight: "bold")[Note :] #content
+  ]
+}
+
+// Numbered procedure step — bold action verb
+#let step(verb: "", rest) = {
+  block(below: 0.5em)[
+    *#verb* #rest
+  ]
+}
+
+// ════════════════════════════════════════════════════════════
+//  ① DOCUMENT HEADER — Identification & Traceabilité
+// ════════════════════════════════════════════════════════════
+
+// ── Title block ──────────────────────────────────────────────
+#line(length: 100%, stroke: 1.5pt)
+#v(0.4em)
+#align(center)[
+  #text(size: 16pt, weight: "bold")[Dosage des Ions Chlorure par la Méthode de Mohr] \
+  #v(4pt)
+  #text(size: 11pt)[Titrimétrie Argentimétrique — Norme ISO 9297:1989(F)]
+]
+#v(0.4em)
+#line(length: 100%, stroke: 1.5pt)
+
+#v(0.8em)
+
+// ── Identification table ─────────────────────────────────────
+#table(
+  columns: (auto, 1fr, auto, 1fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  // Row 1
+  [*Référence*],
+  [PRO-CHM-001],                        // ← FILL: document reference code
+  [*Révision*],
+  [1.0],                                // ← FILL: revision number
+
+  // Row 2
+  [*Date d'application*],
+  [JJ/MM/AAAA],                         // ← FILL: implementation date
+  [*Statut*],
+  [En vigueur],                         // ← FILL: Projet / En vigueur / Archivé
+
+  // Row 3
+  [*Rédigé par*],
+  [Nom — Fonction],                     // ← FILL: author name & role
+  [*Approuvé par*],
+  [Nom — Superviseur],                  // ← FILL: approving supervisor
+
+  // Row 4
+  [*Domaine d'application*],
+  table.cell(colspan: 3)[
+    Eaux de surface, eaux souterraines et eaux potables. \
+    Plage de mesure : // ← FILL: e.g., 5 mg/L – 150 mg/L (extensible jusqu'à 400 mg/L)
+  ],
+)
+
+#v(1em)
+
+// ════════════════════════════════════════════════════════════
+//  ② SÉCURITÉ ET PRÉVENTION DES RISQUES
+// ════════════════════════════════════════════════════════════
+
+= Sécurité et Prévention des Risques
+
+// ── 2.1 Pictogrammes et mentions de danger ───────────────────
+== Pictogrammes et Mentions de Danger Réglementaires
+
+// GHS pictogram helper — renders one SVG icon at 30pt
+#let ghs(code) = image(
+  "../GHS_Pictogrammes/" + code + ".svg",
+  width: 30pt,
+)
+
+// Inline row of icons with a small gap
+#let icons(..codes) = {
+  for c in codes.pos() { box(ghs(c)); h(3pt) }
+}
+
+#show table.cell: set text(hyphenate: false)
+#table(
+  columns: (1.8fr, auto, 2fr, 2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 10pt),
+  align: (left, center, left, left),
+
+  [*Produit chimique*], [*Pictogramme(s) GHS*], [*Mentions de danger*], [*Conseils de prudence*],
+
+  // ── AgNO₃ : GHS03 · GHS05 · GHS09
+  [Nitrate d'argent \ $"AgNO"_3$],
+  [#icons("GHS03", "GHS05", "GHS09")],
+  [Comburant, très corrosif pour la peau et nocif pour l'environnement.],
+  [Porter des gants/lunettes et éviter tout rejet à l'évier.],
+
+  // ── K₂CrO₄ : GHS07 · GHS08 · GHS09
+  [Chromate de potassium \ $"K"_2"CrO"_4$],
+  [#icons("GHS07", "GHS08", "GHS09")],
+  [Toxique, cancérogène avéré et dangereux pour l'environnement.],
+  [Manipuler strictement sous hotte avec gants et lunettes.],
+
+  // ── HNO₃ 0,1 mol/L : GHS05
+  [Acide nitrique $"HNO"_3$ \ $0","1 "mol/L"$],
+  [#icons("GHS05")],
+  [Corrosif pour les métaux et la peau à cette concentration.],
+  [Éviter de respirer les vapeurs et porter des gants/lunettes.],
+
+  // ── NaOH 0,1 mol/L : GHS05
+  [Hydroxyde de sodium $"NaOH"$ \ $0","1 "mol/L"$],
+  [#icons("GHS05")],
+  [Faiblement corrosif (attaque les métaux et irrite la peau).],
+  [Conserver dans son flacon d'origine et rincer à l'eau en cas de contact.],
+)
+
+
+// ════════════════════════════════════════════════════════════
+//  ③ MATÉRIEL ET RÉACTIFS
+// ════════════════════════════════════════════════════════════
+
+= Matériel et Réactifs
+
+// ── 3.1 Appareillage ─────────────────────────────────────────
+== Appareillage
+
+// ← FILL: complete the class/tolerance column and norm references.
+#table(
+  columns: (2.5fr, 1.2fr, 1.2fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Équipement*], [*Capacité / Portée*], [*Classe / Tolérance*], [*Norme de référence*],
+
+  [Burette],
+  [25,0 mL],
+  [/* FILL: Classe A / ±0,05 mL */],
+  [ISO 385-1],
+
+  [Pipette jaugée],
+  [100,0 mL],
+  [/* FILL: Classe A */],
+  [/* FILL: e.g., ISO 648 */],
+
+  [Fiole jaugée],
+  [1 000 mL],
+  [/* FILL: Classe A */],
+  [/* FILL: e.g., ISO 1042 */],
+
+  [Balance analytique],
+  [/* FILL: e.g., 220 g */],
+  [/* FILL: ±0,1 mg */],
+  [/* FILL */],
+
+  [pH-mètre avec électrode combinée],
+  [pH 0–14],
+  [/* FILL: ±0,1 pH */],
+  [/* FILL */],
+
+  [Capsule en porcelaine blanche],
+  [—],
+  [—],
+  [—],
+
+  [Agitateur magnétique],
+  [—],
+  [—],
+  [—],
+)
+
+// ── 3.2 Réactifs ─────────────────────────────────────────────
+== Réactifs
+
+// ← FILL: complete the Préparation and Conservation columns.
+#table(
+  columns: (2fr, 1.3fr, 2fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Réactif*], [*Concentration*], [*Préparation / Pureté*], [*Conservation*],
+
+  // §4.1 — AgNO₃
+  [Nitrate d'argent AgNO₃ — solution titrée],
+  [c ≈ 0,02 mol/L],
+  [/* FILL: 3,3974 g séchés à 105 °C, dissoudre, ajuster à 1 000 mL */],
+  [/* FILL: flacon verre brun, stable plusieurs mois */],
+
+  // §4.2 — K₂CrO₄ indicateur
+  [Chromate de potassium K₂CrO₄ — indicateur],
+  [100 g/L],
+  [/* FILL: 10 g dissous dans l'eau, diluer à 100 mL */],
+  [/* FILL */],
+
+  // §4.3 — NaCl étalon
+  [Chlorure de sodium NaCl — solution étalon de référence],
+  [c = 0,02 mol/L],
+  [/* FILL: 1,1688 g séchés à 105 °C, dissoudre, ajuster à 1 000 mL */],
+  [/* FILL */],
+
+  // §4.4 — HNO₃
+  [Acide nitrique HNO₃],
+  [c ≈ 0,1 mol/L],
+  [/* FILL: préparation par dilution */],
+  [/* FILL: stable indéfiniment en flacon verre */],
+
+  // §4.5 — NaOH
+  [Hydroxyde de sodium NaOH],
+  [c ≈ 0,1 mol/L],
+  [/* FILL */],
+  [/* FILL */],
+
+  // §4.6 — Tampon solide
+  [Carbonate de calcium CaCO₃ / NaHCO₃],
+  [Poudre],
+  [Qualité analytique],
+  [/* FILL */],
+)
+
+#note-box[
+  Utiliser uniquement des réactifs de qualité analytique reconnue et de l'eau distillée
+  ou d'une pureté équivalente (ISO 9297:1989, §4).
+  NOTE 1 — Tous les composés et solutions d'argent sont *sensibles à la lumière*.
+  Les sels d'argent occasionnent temporairement des taches brunes sur la peau.
+]
+
+// ════════════════════════════════════════════════════════════
+//  ④ PRINCIPE DE LA MÉTHODE
+// ════════════════════════════════════════════════════════════
+
+= Principe de la Méthode
+
+// ← FILL: narrative description of the argentometric Mohr titration.
+//
+//   Phase 1 — Précipitation quantitative des chlorures :
+//     Ag⁺  +  Cl⁻  →  AgCl↓  (précipité blanc)
+//
+//   Phase 2 — Virage de l'indicateur (excès d'Ag⁺) :
+//     2 Ag⁺  +  CrO₄²⁻  →  Ag₂CrO₄↓  (précipité brun-rouge)
+//
+//   Conditions requises :
+//   - pH maintenu entre 5 et 9,5 pour une précipitation quantitative
+//   - Si NH₄⁺ > 10 mg/L : maintenir pH entre 6,5 et 7
+//   - Fond blanc recommandé pour la détection du virage
+
+// ════════════════════════════════════════════════════════════
+//  ⑤ MODE OPÉRATOIRE
+// ════════════════════════════════════════════════════════════
+
+= Mode Opératoire
+
+#warn-box(title: "Vérifications préalables — À effectuer avant toute analyse")[
+  // ← FILL: pre-analytical checklist, e.g.:
+  // - Vérifier la date d'étalonnage du pH-mètre (validité : 1 semaine)
+  // - Contrôler la propreté de la burette et l'absence de bulles d'air
+  // - Préparer la solution à blanc (100 mL d'eau distillée)
+  // - Vérifier la conservation des solutions (flacons brun, à l'obscurité)
+]
+
+// ── 5.1 Étalonnage de la solution de nitrate d'argent ───────
+== Étalonnage de la Solution de Nitrate d'Argent (AgNO₃)
+
++ #step(verb: "Prélever")[
+    // ← FILL: *10,0 mL* de la solution étalon de NaCl (§4.3) à l'aide
+    //         de la pipette jaugée de classe A.
+  ]
+
++ #step(verb: "Transférer")[
+    // ← FILL: introduire dans une capsule en porcelaine blanche posée sur
+    //         fond blanc et compléter à *100 mL* avec de l'eau distillée.
+  ]
+
++ #step(verb: "Ajouter")[
+    // ← FILL: *1 mL* d'indicateur de chromate de potassium (§4.2).
+    //         NOTE : l'ajustement de pH n'est PAS requis pour cette étape.
+  ]
+
++ #step(verb: "Titrer")[
+    // ← FILL: ajouter la solution de AgNO₃ (§4.1) goutte à goutte sous
+    //         agitation jusqu'à apparition d'une coloration brun-rougeâtre
+    //         persistante. Noter le volume V_s consommé.
+  ]
+
++ #step(verb: "Calculer")[
+    // ← FILL: déterminer la concentration réelle c (mol/L) de AgNO₃ à
+    //         partir du volume V_s et de la concentration exacte de NaCl.
+  ]
+
++ #step(verb: "Conserver")[
+    // ← FILL: garder le flacon ayant servi à l'étalonnage comme témoin
+    //         visuel (référence de couleur) pour les titrages suivants.
+  ]
+
+// ── 5.2 Préparation de l'échantillon — Ajustement du pH ─────
+== Préparation de l'Échantillon et Ajustement du pH
+
+#note-box[
+  L'électrode de pH libère des ions Cl⁻ (KCl). L'ajustement du pH doit
+  toujours être effectué sur une *aliquote séparée*, jamais directement
+  sur la prise d'essai destinée au titrage (ISO 9297:1989, §6.1).
+]
+
++ #step(verb: "Prélever")[
+    // ← FILL: *100 mL* de l'échantillon (V_a) à l'aide de la pipette jaugée,
+    //         ou une quantité moindre diluée à 100 mL. Introduire dans une
+    //         capsule en porcelaine blanche posée sur fond blanc.
+  ]
+
++ #step(verb: "Mesurer")[
+    // ← FILL: mesurer le pH sur une aliquote séparée du même échantillon
+    //         à l'aide du pH-mètre étalonné.
+  ]
+
++ #step(verb: "Ajuster")[
+    // ← FILL: si pH < 5 → ajouter HNO₃ (§4.4) ;
+    //         si pH > 9,5 → ajouter NaOH (§4.5).
+    //         Cible : 5 ≤ pH ≤ 9,5. Si NH₄⁺ > 10 mg/L → cible 6,5 ≤ pH ≤ 7.
+    //         Noter précisément le volume d'acide/base utilisé (V_adjust).
+  ]
+
++ #step(verb: "Reporter")[
+    // ← FILL: ajouter le même volume V_adjust à la prise d'essai réelle
+    //         sans re-mesurer le pH (technique de l'aliquote).
+  ]
+
+#note-box[
+  Si pH < 5 malgré l'ajout, renforcer la capacité tampon par addition de poudre de
+  *CaCO₃ ou NaHCO₃* (§4.6). Veiller à ce qu'un résidu de carbonate subsiste après titrage
+  (ISO 9297:1989, Note 2, §6.1).
+]
+
+// ── 5.3 Titrage de l'échantillon ────────────────────────────
+== Essai à Blanc
+
++ #step(verb: "Préparer")[
+    // ← FILL: utiliser *100 mL* d'eau distillée en lieu et place de l'échantillon.
+  ]
+
++ #step(verb: "Titrer")[
+    // ← FILL: procéder de la même manière qu'en §5.4. Enregistrer le
+    //         volume V_b (mL) consommé.
+  ]
+
++ #step(verb: "Vérifier")[
+    // ← FILL: V_b ne doit pas dépasser *0,2 mL*.
+    //         Si dépassé → vérifier la pureté de l'eau distillée (ISO 9297:1989, §6.2).
+  ]
+
+// ── 5.4 Titrage de l'Échantillon ─────────────────────────────
+== Titrage de l'Échantillon
+
++ #step(verb: "Ajouter")[
+    // ← FILL: *1 mL* d'indicateur K₂CrO₄ (§4.2) à l'échantillon préparé.
+  ]
+
++ #step(verb: "Titrer")[
+    // ← FILL: ajouter la solution de AgNO₃ (§4.1) goutte à goutte depuis
+    //         la burette sous agitation continue jusqu'au virage brun-rougeâtre
+    //         persistant. Enregistrer le volume V_s (mL).
+  ]
+
++ #step(verb: "Valider")[
+    // ← FILL: ajouter une goutte de solution NaCl étalon (§4.3) — la
+    //         coloration rouge doit disparaître immédiatement.
+    //         Si elle persiste → répéter l'analyse.
+  ]
+
++ #step(verb: "Répéter")[
+    // ← FILL: effectuer le titrage en *duplicata*. L'écart entre les deux
+    //         volumes |V_s1 − V_s2| ne doit pas dépasser *0,10 mL*.
+    //         Si dépassé → recommencer l'analyse.
+  ]
+
+#note-box[
+  Si le volume de AgNO₃ dépasse *25 mL*, recommencer avec une prise d'essai plus petite
+  ou utiliser une burette de plus grande capacité (ISO 9297:1989, §6.1).
+]
+
+// ════════════════════════════════════════════════════════════
+//  ⑥ EXPRESSION DES RÉSULTATS
+// ════════════════════════════════════════════════════════════
+
+= Expression des Résultats
+
+// ── 6.1 Formule de calcul ────────────────────────────────────
+== Formule de Calcul
+
+La concentration en ions chlorure $rho_"Cl"$, exprimée en milligrammes par litre,
+est calculée selon la formule suivante (ISO 9297:1989, §7.1) :
+
+#align(center)[
+  #block(
+    fill: none,
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+    
+  )[
+    $ rho_"Cl" = frac((V_s - V_b) times c times f, V_a) $
+  ]
+]
+
+#v(0.6em)
+
+#table(
+  columns: (auto, 1fr, auto),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Symbole*], [*Définition*], [*Unité*],
+
+  [$rho_"Cl"$], [Concentration en ions chlorure dans l'échantillon],                [mg/L],
+  [$V_s$],      [Volume de AgNO₃ utilisé pour le titrage de l'échantillon],         [mL],
+  [$V_b$],      [Volume de AgNO₃ utilisé pour le titrage du blanc],                 [mL],
+  [$c$],        [Concentration réelle de la solution de AgNO₃ (étalonnée)],         [mol/L],
+  [$V_a$],      [Volume de l'échantillon (prise d'essai, max. 100 mL)],             [mL],
+  [$f$],        [Facteur de conversion : $f = 35 453$ mg/mol],                      [mg/mol],
+)
+
+// ── 6.2 Expression et arrondissement du résultat ─────────────
+== Expression et Arrondissement du Résultat
+
+// ← FILL: donner le résultat à *1 mg/L* près, avec *3 chiffres significatifs*
+//         (ISO 9297:1989, §7.1). Mentionner la prise en compte des dilutions éventuelles.
+
+// ── 6.3 Critères d'acceptation — Contrôle Qualité ───────────
+== Critères d'Acceptation et Contrôle Qualité
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Paramètre contrôlé*], [*Type de critère*], [*Limite d'acceptation*], [*Action corrective*],
+
+  [Écart duplicatas $|V_(s 1) - V_(s 2)|$],
+  [Répétabilité],
+  [≤ *0,10 mL*],
+  [Répéter l'analyse],
+
+  [Volume essai à blanc $V_b$],
+  [Pureté de l'eau],
+  [≤ *0,2 mL*],
+  [Vérifier l'eau distillée],
+
+  [Étalonnage AgNO₃],
+  [Fréquence],
+  [/* FILL: e.g., avant chaque série / hebdomadaire */],
+  [/* FILL: recalibrer si dérive > X% */],
+
+  [Solution étalon NaCl],
+  [Traçabilité],
+  [/* FILL: vérification périodique */],
+  [/* FILL */],
+)
+
+
+
+// ════════════════════════════════════════════════════════════
+//  ⑧ FIDÉLITÉ DE LA MÉTHODE
+// ════════════════════════════════════════════════════════════
+
+= Fidélité de la Méthode
+
+// ← FILL: reproduce ISO 9297:1989, Tableau 2 — interlaboratory study (R.F.A., 1983,
+//         conducted per ISO 5725). Complete all numerical values.
+#table(
+  columns: (2.2fr, 0.7fr, 0.7fr, 1fr, 1fr, 1fr, 1fr, 1fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 6pt, y: 5pt),
+  align: (left, center, center, center, center, center, center, center),
+
+  [*Échantillon*], [*L*], [*N*], [*$overline(x)$ (mg/L)*], [$sigma_R$ (mg/L)], [$"CV"_R$ (%)], [$sigma_r$ (mg/L)], [$"CV"_r$ (%)],
+
+  // ← FILL: three rows from ISO 9297:1989, Tableau 2
+  [Eau de boisson],
+  [/* 11 */], [/* 44 */], [/* 12,57 → 12,75 */],
+  [/* 0,213 */], [/* 1,97 */], [/* 0,572 */], [/* 4,5 */],
+
+  [Eau de boisson (additionnée en Cl⁻)],
+  [/* 9 */], [/* 36 */], [/* 63,79 → 64,20 */],
+  [/* 0,372 */], [/* 0,76 */], [/* 0,787 */], [/* 1,2 */],
+
+  [Eau résiduaire municipale],
+  [/* 10 */], [/* 39 */], [/* 106,4 → 106,6 */],
+  [/* 0,676 */], [/* 0,96 */], [/* 1,287 */], [/* 1,2 */],
+)
+
+// ← FILL: légende des symboles du tableau (L, N, x̄, σ_R, σ_r, CV_R, CV_r)
+
+// ════════════════════════════════════════════════════════════
+//  ⑨ RAPPORT D'ESSAI
+// ════════════════════════════════════════════════════════════
+
+= Rapport d'Essai
+
+// ← FILL: éléments obligatoires du rapport d'essai (ISO 9297:1989, §8) :
+//
+// + Référence à la présente Norme internationale (ISO 9297:1989).
+// + Renseignements nécessaires à l'identification complète de l'échantillon
+//   (nature, origine, date et heure de prélèvement, conditions de conservation).
+// + Résultats obtenus et mode d'expression utilisé (mg/L, 3 chiffres significatifs).
+// + Détails opératoires non inclus dans la norme, options choisies, et tout
+//   incident susceptible d'avoir influencé les résultats.
+
+// ════════════════════════════════════════════════════════════
+//  ⑩ RÉFÉRENCES NORMATIVES
+// ════════════════════════════════════════════════════════════
+
+= Références Normatives
+
+// ← FILL: list in ascending order. Sources: ISO 9297:1989, §2 and §5.1.
+//
+// - ISO 385-1       : Verrerie de laboratoire — Burettes
+// - ISO 648         : Verrerie de laboratoire — Pipettes à un trait
+// - ISO 1042        : Verrerie de laboratoire — Fioles jaugées
+// - ISO 5667-1:1980 : Qualité de l'eau — Échantillonnage — Partie 1 : Guide général
+// - ISO 5667-2:1982 : Qualité de l'eau — Échantillonnage — Partie 2 : Techniques
+// - ISO 5667-3:1985 : Qualité de l'eau — Échantillonnage — Partie 3 : Conservation
+// - ISO 5725:1986   : Fidélité des méthodes d'essai
+// - ISO/CEI 17025   : Exigences générales pour la compétence des laboratoires d'étalonnage et d'essais
+

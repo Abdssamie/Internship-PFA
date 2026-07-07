@@ -343,7 +343,7 @@ L'indice de permanganate $I_"PM"$, exprimé en milligrammes d'oxygène par litre
     stroke: 0.5pt,
     inset: (x: 20pt, y: 14pt),
   )[
-    $ I_"PM" = frac((V_1 - V_0) times c("KMnO"_4) times 40 000, V_s) $
+    $ I_"PM" = frac(V_1 - V_0, V_2) times f $
   ]
 ]
 
@@ -359,10 +359,28 @@ L'indice de permanganate $I_"PM"$, exprimé en milligrammes d'oxygène par litre
   [$I_"PM"$], [Indice de permanganate de l'échantillon d'eau], [mg/L $O_2$],
   [$V_1$], [Volume de permanganate de potassium consommé pour l'échantillon], [mL],
   [$V_0$], [Volume de permanganate de potassium consommé pour le blanc], [mL],
-  [$c("KMnO"_4)$], [Concentration en quantité de matière de la solution de permanganate de potassium], [mol/L],
-  [$V_s$], [Volume de l'échantillon d'eau analysé (prise d'essai)], [mL],
-  [$40 000$], [Facteur stœchiométrique prenant en compte la masse molaire de l'oxygène ($5 times 8000$ mg/mol)], [mg/mol],
+  [$V_2$], [Volume de permanganate de potassium consommé pour l'étalonnage], [mL],
+  [$f$], [Facteur de conversion de l'oxygène], [mg/L],
 )
+
+#v(0.6em)
+
+Le facteur de conversion $f$ est calculé selon la formule suivante :
+
+#align(center)[
+  $ f = frac(V_4 times c("Na"_2"C"_2"O"_4) times M_0, V_s) $
+]
+
+Avec :
+- $V_4 = 5 "mL"$ : volume de la solution d'oxalate de sodium ajouté ;
+- $c("Na"_2"C"_2"O"_4) = 5 "mmol/L"$ : concentration de la solution d'oxalate de sodium ;
+- $M_0 = 16 "mg/mmol"$ : masse molaire d'oxygène par millimole (équivalant à $1/2 "O"$) ;
+- $V_s = 100 "mL"$ : volume de l'échantillon d'eau (prise d'essai).
+
+Dans les conditions opératoires spécifiées, la valeur théorique de $f$ est :
+#align(center)[
+  $ f = frac(5 times 5 times 16, 100) = 4 $
+]
 
 == Critères d'Acceptation QC
 

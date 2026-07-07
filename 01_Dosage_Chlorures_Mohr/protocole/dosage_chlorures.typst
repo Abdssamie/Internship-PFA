@@ -127,21 +127,19 @@
 
   // Row 2
   [*Date d'application*],
-  [JJ/MM/AAAA],                         // ← FILL: implementation date
+  [07/07/2026],
   [*Statut*],
-  [En vigueur],                         // ← FILL: Projet / En vigueur / Archivé
+  [En vigueur],
 
   // Row 3
   [*Rédigé par*],
-  [Nom — Fonction],                     // ← FILL: author name & role
-  [*Approuvé par*],
-  [Nom — Superviseur],                  // ← FILL: approving supervisor
+  table.cell(colspan: 3)[Abdessamie El Moubarki],
 
   // Row 4
   [*Domaine d'application*],
   table.cell(colspan: 3)[
     Eaux de surface, eaux souterraines et eaux potables. \
-    Plage de mesure : // ← FILL: e.g., 5 mg/L – 150 mg/L (extensible jusqu'à 400 mg/L)
+    Plage de mesure : 5 mg/L à 150 mg/L (extensible jusqu'à 400 mg/L)
   ],
 )
 
@@ -158,7 +156,7 @@
 
 // GHS pictogram helper — renders one SVG icon at 30pt
 #let ghs(code) = image(
-  "../GHS_Pictogrammes/" + code + ".svg",
+  "../../GHS_Pictogrammes/" + code + ".svg",
   width: 30pt,
 )
 
@@ -189,17 +187,17 @@
   [Toxique, cancérogène avéré et dangereux pour l'environnement.],
   [Manipuler strictement sous hotte avec gants et lunettes.],
 
-  // ── HNO₃ 0,1 mol/L : GHS05
+  // ── HNO₃ 0,1 mol/L : GHS05 · GHS07
   [Acide nitrique $"HNO"_3$ \ $0","1 "mol/L"$],
-  [#icons("GHS05")],
-  [Corrosif pour les métaux et la peau à cette concentration.],
+  [#icons("GHS05", "GHS07")],
+  [Corrosif pour les métaux et irritant pour la peau et les yeux.],
   [Éviter de respirer les vapeurs et porter des gants/lunettes.],
 
-  // ── NaOH 0,1 mol/L : GHS05
+  // ── NaOH 0,1 mol/L : GHS05 · GHS07
   [Hydroxyde de sodium $"NaOH"$ \ $0","1 "mol/L"$],
-  [#icons("GHS05")],
-  [Faiblement corrosif (attaque les métaux et irrite la peau).],
-  [Conserver dans son flacon d'origine et rincer à l'eau en cas de contact.],
+  [#icons("GHS05", "GHS07")],
+  [Corrosif pour les métaux, irritant léger pour la peau et les yeux.],
+  [Conserver dans son flacon d'origine et rincer abondamment à l'eau en cas de contact.],
 )
 
 
@@ -223,28 +221,28 @@
 
   [Burette],
   [25,0 mL],
-  [/* FILL: Classe A / ±0,05 mL */],
-  [ISO 385-1],
+  [Classe A / ± 0,05 mL],
+  [ISO 385],
 
   [Pipette jaugée],
   [100,0 mL],
-  [/* FILL: Classe A */],
-  [/* FILL: e.g., ISO 648 */],
+  [Classe A / ± 0,08 mL],
+  [ISO 648],
 
   [Fiole jaugée],
   [1 000 mL],
-  [/* FILL: Classe A */],
-  [/* FILL: e.g., ISO 1042 */],
+  [Classe A / ± 0,40 mL],
+  [ISO 1042],
 
   [Balance analytique],
-  [/* FILL: e.g., 220 g */],
-  [/* FILL: ±0,1 mg */],
-  [/* FILL */],
+  [220 g],
+  [± 0,1 mg],
+  [—],
 
   [pH-mètre avec électrode combinée],
   [pH 0–14],
-  [/* FILL: ±0,1 pH */],
-  [/* FILL */],
+  [± 0,01 pH],
+  [ISO 10523],
 
   [Capsule en porcelaine blanche],
   [—],
@@ -272,45 +270,42 @@
   // §4.1 — AgNO₃
   [Nitrate d'argent AgNO₃ — solution titrée],
   [c ≈ 0,02 mol/L],
-  [/* FILL: 3,3974 g séchés à 105 °C, dissoudre, ajuster à 1 000 mL */],
-  [/* FILL: flacon verre brun, stable plusieurs mois */],
+  [Dissoudre 3,3974 g de sel séché à 105 °C dans de l'eau distillée, compléter à 1 000 mL dans une fiole jaugée.],
+  [Flacon en verre brun à l'obscurité, stable plusieurs mois.],
 
   // §4.2 — K₂CrO₄ indicateur
   [Chromate de potassium K₂CrO₄ — indicateur],
   [100 g/L],
-  [/* FILL: 10 g dissous dans l'eau, diluer à 100 mL */],
-  [/* FILL */],
+  [Dissoudre 10 g de sel dans de l'eau distillée, compléter à 100 mL.],
+  [Flacon en verre, stable indéfiniment.],
 
   // §4.3 — NaCl étalon
   [Chlorure de sodium NaCl — solution étalon de référence],
   [c = 0,02 mol/L],
-  [/* FILL: 1,1688 g séchés à 105 °C, dissoudre, ajuster à 1 000 mL */],
-  [/* FILL */],
+  [Dissoudre 1,1688 g de sel préalablement séché à 105 °C dans de l'eau distillée, compléter à 1 000 mL dans une fiole jaugée.],
+  [Flacon étanche en verre ou polyéthylène, stable indéfiniment.],
 
   // §4.4 — HNO₃
   [Acide nitrique HNO₃],
   [c ≈ 0,1 mol/L],
-  [/* FILL: préparation par dilution */],
-  [/* FILL: stable indéfiniment en flacon verre */],
+  [Diluer une solution concentrée d'acide nitrique dans l'eau distillée.],
+  [Flacon en verre, stable indéfiniment.],
 
   // §4.5 — NaOH
   [Hydroxyde de sodium NaOH],
   [c ≈ 0,1 mol/L],
-  [/* FILL */],
-  [/* FILL */],
+  [Dissoudre 4,0 g de pastilles de NaOH dans l'eau distillée et compléter à 1 000 mL, ou diluer une solution concentrée.],
+  [Flacon en polyéthylène (éviter le verre), stable.],
 
   // §4.6 — Tampon solide
   [Carbonate de calcium CaCO₃ / NaHCO₃],
   [Poudre],
   [Qualité analytique],
-  [/* FILL */],
+  [Flacon étanche à température ambiante.],
 )
 
 #note-box[
-  Utiliser uniquement des réactifs de qualité analytique reconnue et de l'eau distillée
-  ou d'une pureté équivalente (ISO 9297:1989, §4).
-  NOTE 1 — Tous les composés et solutions d'argent sont *sensibles à la lumière*.
-  Les sels d'argent occasionnent temporairement des taches brunes sur la peau.
+  Tous les composés et solutions d'argent sont *sensibles à la lumière*. Les sels d'argent occasionnent temporairement des taches brunes sur la peau.
 ]
 
 // ════════════════════════════════════════════════════════════
@@ -319,18 +314,15 @@
 
 = Principe de la Méthode
 
-// ← FILL: narrative description of the argentometric Mohr titration.
-//
-//   Phase 1 — Précipitation quantitative des chlorures :
-//     Ag⁺  +  Cl⁻  →  AgCl↓  (précipité blanc)
-//
-//   Phase 2 — Virage de l'indicateur (excès d'Ag⁺) :
-//     2 Ag⁺  +  CrO₄²⁻  →  Ag₂CrO₄↓  (précipité brun-rouge)
-//
-//   Conditions requises :
-//   - pH maintenu entre 5 et 9,5 pour une précipitation quantitative
-//   - Si NH₄⁺ > 10 mg/L : maintenir pH entre 6,5 et 7
-//   - Fond blanc recommandé pour la détection du virage
+Le dosage repose sur la précipitation fractionnée (méthode de Mohr). Les ions chlorure ($"Cl"^-$) réagissent quantitativement avec les ions argent ($"Ag"^+$) pour former un précipité blanc de chlorure d'argent ($"AgCl"$) :
+
+$ "Ag"^+ + "Cl"^- -> "AgCl" ↓ " (précipité blanc)" $
+
+Dès l'épuisement des ions chlorure, un léger excès d'ions argent réagit avec les ions chromate ($"CrO"_4^(2-)$) ajoutés comme indicateur pour former un précipité brun-rouge de chromate d'argent ($"Ag"_2 "CrO"_4$) indiquant la fin de réaction :
+
+$ 2 "Ag"^+ + "CrO"_4^(2-) -> "Ag"_2 "CrO"_4 ↓ " (précipité brun-rouge)" $
+
+Le titrage doit être effectué à un pH maintenu entre *5 et 9,5* pour permettre la précipitation quantitative du chromate d'argent sans interférence.
 
 // ════════════════════════════════════════════════════════════
 //  ⑤ MODE OPÉRATOIRE
@@ -339,130 +331,102 @@
 = Mode Opératoire
 
 #warn-box(title: "Vérifications préalables — À effectuer avant toute analyse")[
-  // ← FILL: pre-analytical checklist, e.g.:
-  // - Vérifier la date d'étalonnage du pH-mètre (validité : 1 semaine)
-  // - Contrôler la propreté de la burette et l'absence de bulles d'air
-  // - Préparer la solution à blanc (100 mL d'eau distillée)
-  // - Vérifier la conservation des solutions (flacons brun, à l'obscurité)
+  - Vérifier la date d'étalonnage du pH-mètre (validité d'une semaine).
+  - Contrôler la propreté de la burette et l'absence de bulles d'air.
+  - Préparer la solution à blanc (100 mL d'eau distillée).
+  - Vérifier la conservation des solutions (flacons en verre brun, à l'obscurité).
 ]
 
 // ── 5.1 Étalonnage de la solution de nitrate d'argent ───────
 == Étalonnage de la Solution de Nitrate d'Argent (AgNO₃)
 
 + #step(verb: "Prélever")[
-    // ← FILL: *10,0 mL* de la solution étalon de NaCl (§4.3) à l'aide
-    //         de la pipette jaugée de classe A.
+    *10,0 mL* de la solution étalon de NaCl (0,02 mol/L) à l'aide d'une pipette jaugée de classe A.
   ]
 
 + #step(verb: "Transférer")[
-    // ← FILL: introduire dans une capsule en porcelaine blanche posée sur
-    //         fond blanc et compléter à *100 mL* avec de l'eau distillée.
+    l'aliquote dans un bécher ou une capsule en porcelaine blanche et diluer à environ *100 mL* avec de l'eau distillée.
   ]
 
 + #step(verb: "Ajouter")[
-    // ← FILL: *1 mL* d'indicateur de chromate de potassium (§4.2).
-    //         NOTE : l'ajustement de pH n'est PAS requis pour cette étape.
+    *1,0 mL* de la solution d'indicateur de chromate de potassium (100 g/L).
   ]
 
 + #step(verb: "Titrer")[
-    // ← FILL: ajouter la solution de AgNO₃ (§4.1) goutte à goutte sous
-    //         agitation jusqu'à apparition d'une coloration brun-rougeâtre
-    //         persistante. Noter le volume V_s consommé.
+    avec la solution de nitrate d'argent ($"AgNO"_3$) jusqu'à l'apparition d'une coloration brun-rougeâtre persistante. Noter le volume $V_s$ consommé.
   ]
 
 + #step(verb: "Calculer")[
-    // ← FILL: déterminer la concentration réelle c (mol/L) de AgNO₃ à
-    //         partir du volume V_s et de la concentration exacte de NaCl.
+    la concentration exacte $c$ du nitrate d'argent (en mol/L) à partir du volume équivalent consommé.
   ]
 
 + #step(verb: "Conserver")[
-    // ← FILL: garder le flacon ayant servi à l'étalonnage comme témoin
-    //         visuel (référence de couleur) pour les titrages suivants.
+    le mélange titré pour servir de témoin de coloration (comparatif visuel) pour les titrages d'échantillons réels.
   ]
 
 // ── 5.2 Préparation de l'échantillon — Ajustement du pH ─────
 == Préparation de l'Échantillon et Ajustement du pH
 
 #note-box[
-  L'électrode de pH libère des ions Cl⁻ (KCl). L'ajustement du pH doit
-  toujours être effectué sur une *aliquote séparée*, jamais directement
-  sur la prise d'essai destinée au titrage (ISO 9297:1989, §6.1).
+  L'électrode de pH libère des ions Cl⁻ (KCl). L'ajustement du pH doit toujours être effectué sur une *aliquote séparée*, jamais directement sur la prise d'essai destinée au titrage.
 ]
 
 + #step(verb: "Prélever")[
-    // ← FILL: *100 mL* de l'échantillon (V_a) à l'aide de la pipette jaugée,
-    //         ou une quantité moindre diluée à 100 mL. Introduire dans une
-    //         capsule en porcelaine blanche posée sur fond blanc.
+    *100,0 mL* de l'échantillon (ou un volume $V_a$ dilué à 100 mL) dans une capsule en porcelaine blanche.
   ]
 
 + #step(verb: "Mesurer")[
-    // ← FILL: mesurer le pH sur une aliquote séparée du même échantillon
-    //         à l'aide du pH-mètre étalonné.
+    le pH de l'échantillon sur une portion (aliquote) séparée à l'aide d'un pH-mètre étalonné.
   ]
 
 + #step(verb: "Ajuster")[
-    // ← FILL: si pH < 5 → ajouter HNO₃ (§4.4) ;
-    //         si pH > 9,5 → ajouter NaOH (§4.5).
-    //         Cible : 5 ≤ pH ≤ 9,5. Si NH₄⁺ > 10 mg/L → cible 6,5 ≤ pH ≤ 7.
-    //         Noter précisément le volume d'acide/base utilisé (V_adjust).
+    si le pH est inférieur à 5, ajouter de l'hydroxyde de sodium ; si le pH est supérieur à 9,5, ajouter de l'acide nitrique. Cible : pH entre 5 et 9,5 (ou entre *6,5 et 7* en présence d'ions ammonium supérieurs à 10 mg/L). Noter le volume d'acide ou de base requis ($V_"adjust"$).
   ]
 
 + #step(verb: "Reporter")[
-    // ← FILL: ajouter le même volume V_adjust à la prise d'essai réelle
-    //         sans re-mesurer le pH (technique de l'aliquote).
+    le même volume $V_"adjust"$ d'acide ou de base sur la prise d'essai réelle (sans mesurer directement avec l'électrode).
   ]
 
 #note-box[
-  Si pH < 5 malgré l'ajout, renforcer la capacité tampon par addition de poudre de
-  *CaCO₃ ou NaHCO₃* (§4.6). Veiller à ce qu'un résidu de carbonate subsiste après titrage
-  (ISO 9297:1989, Note 2, §6.1).
+  Si le pH est inférieur à 5, il peut être utile d'ajuster le pH à l'aide de carbonate de calcium ou d'hydrogénocarbonate de sodium.
 ]
 
 // ── 5.3 Titrage de l'échantillon ────────────────────────────
 == Essai à Blanc
 
 + #step(verb: "Préparer")[
-    // ← FILL: utiliser *100 mL* d'eau distillée en lieu et place de l'échantillon.
+    utiliser *100,0 mL* d'eau distillée en lieu et place de l'échantillon.
   ]
 
 + #step(verb: "Titrer")[
-    // ← FILL: procéder de la même manière qu'en §5.4. Enregistrer le
-    //         volume V_b (mL) consommé.
+    ajouter *1,0 mL* de solution d'indicateur de chromate de potassium et titrer avec la solution de nitrate d'argent jusqu'à l'apparition d'une coloration brun-rougeâtre persistante. Enregistrer le volume $V_b$ (mL) consommé.
   ]
 
 + #step(verb: "Vérifier")[
-    // ← FILL: V_b ne doit pas dépasser *0,2 mL*.
-    //         Si dépassé → vérifier la pureté de l'eau distillée (ISO 9297:1989, §6.2).
+    que le volume $V_b$ ne dépasse pas *0,2 mL*. Dans le cas contraire, vérifier la pureté de l'eau distillée.
   ]
 
 // ── 5.4 Titrage de l'Échantillon ─────────────────────────────
 == Titrage de l'Échantillon
 
 + #step(verb: "Ajouter")[
-    // ← FILL: *1 mL* d'indicateur K₂CrO₄ (§4.2) à l'échantillon préparé.
+    *1,0 mL* d'indicateur de chromate de potassium à la prise d'essai préparée et ajustée.
   ]
 
 + #step(verb: "Titrer")[
-    // ← FILL: ajouter la solution de AgNO₃ (§4.1) goutte à goutte depuis
-    //         la burette sous agitation continue jusqu'au virage brun-rougeâtre
-    //         persistant. Enregistrer le volume V_s (mL).
+    goutte à goutte avec la solution de nitrate d'argent sous agitation continue jusqu'à l'apparition d'une coloration brun-rougeâtre persistante. Enregistrer le volume $V_s$ (mL).
   ]
 
 + #step(verb: "Valider")[
-    // ← FILL: ajouter une goutte de solution NaCl étalon (§4.3) — la
-    //         coloration rouge doit disparaître immédiatement.
-    //         Si elle persiste → répéter l'analyse.
+    ajouter une goutte de solution étalon de NaCl : la coloration rouge doit disparaître immédiatement. Si elle persiste, répéter l'analyse.
   ]
 
 + #step(verb: "Répéter")[
-    // ← FILL: effectuer le titrage en *duplicata*. L'écart entre les deux
-    //         volumes |V_s1 − V_s2| ne doit pas dépasser *0,10 mL*.
-    //         Si dépassé → recommencer l'analyse.
+    effectuer le titrage en *duplicata*. L'écart entre les deux volumes $|V_(s 1) - V_(s 2)|$ ne doit pas dépasser *0,10 mL*.
   ]
 
 #note-box[
-  Si le volume de AgNO₃ dépasse *25 mL*, recommencer avec une prise d'essai plus petite
-  ou utiliser une burette de plus grande capacité (ISO 9297:1989, §6.1).
+  Si le volume de nitrate d'argent utilisé dépasse *25 mL*, répéter le titrage avec une plus petite prise d'essai.
 ]
 
 // ════════════════════════════════════════════════════════════
@@ -475,7 +439,7 @@
 == Formule de Calcul
 
 La concentration en ions chlorure $rho_"Cl"$, exprimée en milligrammes par litre,
-est calculée selon la formule suivante (ISO 9297:1989, §7.1) :
+est calculée selon la formule suivante :
 
 #align(center)[
   #block(
@@ -506,11 +470,10 @@ est calculée selon la formule suivante (ISO 9297:1989, §7.1) :
   [$f$],        [Facteur de conversion : $f = 35 453$ mg/mol],                      [mg/mol],
 )
 
-// ── 6.2 Expression et arrondissement du résultat ─────────────
+// ── 6.2 Expression et Arrondissement du Résultat ─────────────
 == Expression et Arrondissement du Résultat
 
-// ← FILL: donner le résultat à *1 mg/L* près, avec *3 chiffres significatifs*
-//         (ISO 9297:1989, §7.1). Mentionner la prise en compte des dilutions éventuelles.
+Exprimer le résultat en milligrammes par litre (mg/L), arrondi à l'unité près avec trois chiffres significatifs. Prendre en compte toute dilution préalable éventuelle de l'échantillon.
 
 // ── 6.3 Critères d'acceptation — Contrôle Qualité ───────────
 == Critères d'Acceptation et Contrôle Qualité
@@ -535,79 +498,25 @@ est calculée selon la formule suivante (ISO 9297:1989, §7.1) :
 
   [Étalonnage AgNO₃],
   [Fréquence],
-  [/* FILL: e.g., avant chaque série / hebdomadaire */],
-  [/* FILL: recalibrer si dérive > X% */],
+  [Hebdomadaire (ou avant chaque série)],
+  [Recalibrer la solution de nitrate d'argent],
 
   [Solution étalon NaCl],
   [Traçabilité],
-  [/* FILL: vérification périodique */],
-  [/* FILL */],
+  [Systématique à chaque préparation],
+  [Vérifier la pureté et le séchage du sel],
 )
 
-
-
 // ════════════════════════════════════════════════════════════
-//  ⑧ FIDÉLITÉ DE LA MÉTHODE
-// ════════════════════════════════════════════════════════════
-
-= Fidélité de la Méthode
-
-// ← FILL: reproduce ISO 9297:1989, Tableau 2 — interlaboratory study (R.F.A., 1983,
-//         conducted per ISO 5725). Complete all numerical values.
-#table(
-  columns: (2.2fr, 0.7fr, 0.7fr, 1fr, 1fr, 1fr, 1fr, 1fr),
-  stroke: 0.5pt,
-  fill: none,
-  inset: (x: 6pt, y: 5pt),
-  align: (left, center, center, center, center, center, center, center),
-
-  [*Échantillon*], [*L*], [*N*], [*$overline(x)$ (mg/L)*], [$sigma_R$ (mg/L)], [$"CV"_R$ (%)], [$sigma_r$ (mg/L)], [$"CV"_r$ (%)],
-
-  // ← FILL: three rows from ISO 9297:1989, Tableau 2
-  [Eau de boisson],
-  [/* 11 */], [/* 44 */], [/* 12,57 → 12,75 */],
-  [/* 0,213 */], [/* 1,97 */], [/* 0,572 */], [/* 4,5 */],
-
-  [Eau de boisson (additionnée en Cl⁻)],
-  [/* 9 */], [/* 36 */], [/* 63,79 → 64,20 */],
-  [/* 0,372 */], [/* 0,76 */], [/* 0,787 */], [/* 1,2 */],
-
-  [Eau résiduaire municipale],
-  [/* 10 */], [/* 39 */], [/* 106,4 → 106,6 */],
-  [/* 0,676 */], [/* 0,96 */], [/* 1,287 */], [/* 1,2 */],
-)
-
-// ← FILL: légende des symboles du tableau (L, N, x̄, σ_R, σ_r, CV_R, CV_r)
-
-// ════════════════════════════════════════════════════════════
-//  ⑨ RAPPORT D'ESSAI
-// ════════════════════════════════════════════════════════════
-
-= Rapport d'Essai
-
-// ← FILL: éléments obligatoires du rapport d'essai (ISO 9297:1989, §8) :
-//
-// + Référence à la présente Norme internationale (ISO 9297:1989).
-// + Renseignements nécessaires à l'identification complète de l'échantillon
-//   (nature, origine, date et heure de prélèvement, conditions de conservation).
-// + Résultats obtenus et mode d'expression utilisé (mg/L, 3 chiffres significatifs).
-// + Détails opératoires non inclus dans la norme, options choisies, et tout
-//   incident susceptible d'avoir influencé les résultats.
-
-// ════════════════════════════════════════════════════════════
-//  ⑩ RÉFÉRENCES NORMATIVES
+//  ⑦ RÉFÉRENCES NORMATIVES
 // ════════════════════════════════════════════════════════════
 
 = Références Normatives
 
-// ← FILL: list in ascending order. Sources: ISO 9297:1989, §2 and §5.1.
-//
-// - ISO 385-1       : Verrerie de laboratoire — Burettes
-// - ISO 648         : Verrerie de laboratoire — Pipettes à un trait
-// - ISO 1042        : Verrerie de laboratoire — Fioles jaugées
-// - ISO 5667-1:1980 : Qualité de l'eau — Échantillonnage — Partie 1 : Guide général
-// - ISO 5667-2:1982 : Qualité de l'eau — Échantillonnage — Partie 2 : Techniques
-// - ISO 5667-3:1985 : Qualité de l'eau — Échantillonnage — Partie 3 : Conservation
-// - ISO 5725:1986   : Fidélité des méthodes d'essai
-// - ISO/CEI 17025   : Exigences générales pour la compétence des laboratoires d'étalonnage et d'essais
+- *ISO 385* : Verrerie de laboratoire — Burettes.
+- *ISO 648* : Verrerie de laboratoire — Pipettes à un trait.
+- *ISO 1042* : Verrerie de laboratoire — Fioles jaugées.
+- *ISO 5667-3* : Qualité de l'eau — Échantillonnage — Partie 3 : Guide pour la conservation et la manipulation des échantillons.
+- *ISO 10523* : Qualité de l'eau — Détermination du pH.
+- *ISO/CEI 17025* : Exigences générales pour la compétence des laboratoires d'étalonnage et d'essais.
 

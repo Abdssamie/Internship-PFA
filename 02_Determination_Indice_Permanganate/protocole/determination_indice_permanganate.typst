@@ -1,0 +1,402 @@
+// ============================================================
+//  PROTOCOLE D'ANALYSE — DÉTERMINATION DE L'INDICE PERMANGANATE
+//  Méthode au Permanganate de Potassium en Milieu Acide
+//  Référence normative : ISO 8467:1993
+// ============================================================
+
+// ── Global page settings ────────────────────────────────────
+#set page(
+  paper: "a4",
+  margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
+  numbering: "1 / 1",
+  number-align: right,
+  header: [
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[Détermination de l'Indice Permanganate],
+      align(right)[Réf. : *PRO-CHM-002* | Rév. : *1.0*],
+    )
+    #line(length: 100%, stroke: 0.5pt)
+  ],
+  footer: [
+    #line(length: 100%, stroke: 0.5pt)
+    #set text(size: 8pt)
+    #align(center)[#context [Page #counter(page).display() / #counter(page).final().first()]]
+  ],
+)
+
+// ── Typography ───────────────────────────────────────────────
+#set text(font: "STIX Two Text", size: 10.5pt, lang: "fr")
+#show math.equation: set text(font: "STIX Two Math")
+#show raw: set text(font: "Source Code Pro", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set heading(numbering: "1.1.1")
+
+// ── Reusable components ─────────────────────────────────────
+
+// Section heading: full-width rule above, bold black text
+#show heading.where(level: 1): it => {
+  v(1.2em)
+  line(length: 100%, stroke: 1pt)
+  block(above: 0.4em, below: 0.6em)[
+    #set text(size: 13pt, weight: "bold")
+    #it
+  ]
+}
+
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  block(below: 0.4em)[
+    #set text(size: 11pt, weight: "bold")
+    #it
+  ]
+}
+
+// Safety callout — left thick rule, black border, no fill
+#let safety-box(title, content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: 0.5pt),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚠ #title] \
+    #content
+  ]
+}
+
+// Warning callout — same structure, dashed border
+#let warn-box(title, content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: (dash: "dashed", thickness: 0.5pt)),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚑ #title] \
+    #content
+  ]
+}
+
+// Informational note — indented, thin border
+#let note-box(content) = {
+  block(
+    width: 100%,
+    stroke: (left: 1.5pt, rest: none),
+    inset: (left: 12pt, right: 0pt, y: 4pt),
+  )[
+    #text(weight: "bold")[Note :] #content
+  ]
+}
+
+// Numbered procedure step — bold action verb
+#let step(verb, rest) = {
+  block(below: 0.5em)[
+    *#verb* #rest
+  ]
+}
+
+// ════════════════════════════════════════════════════════════
+//  ① DOCUMENT HEADER — Identification & Traceabilité
+// ════════════════════════════════════════════════════════════
+
+// ── Title block ──────────────────────────────────────────────
+#line(length: 100%, stroke: 1.5pt)
+#v(0.4em)
+#align(center)[
+  #text(size: 16pt, weight: "bold")[Détermination de l'Indice Permanganate (ISO 8467)]
+]
+#v(0.4em)
+#line(length: 100%, stroke: 1.5pt)
+
+#v(0.8em)
+
+// ── Identification table ─────────────────────────────────────
+#show table.cell: set text(hyphenate: false)
+#table(
+  columns: (auto, 1fr, auto, 1fr),
+  stroke: 0.5pt,
+  inset: (x: 8pt, y: 6pt),
+
+  // Row 1
+  [*Référence*],
+  [PRO-CHM-002],
+  [*Révision*],
+  [1.0],
+
+  // Row 2
+  [*Date d'application*],
+  [07/07/2026],
+  [*Statut*],
+  [En vigueur],
+
+  // Row 3
+  [*Rédigé par*],
+  table.cell(colspan: 3)[Abdessamie El Moubarki],
+
+  // Row 4
+  [*Domaine d'application*],
+  table.cell(colspan: 3)[
+    Eaux destinées à la consommation humaine, eaux de table, eaux naturelles de surface et souterraines.
+  ],
+
+  // Row 5
+  [*Plage de mesure*],
+  table.cell(colspan: 3)[
+    0,5 mg/L à 10 mg/L en oxygène (au-delà, procéder par dilution).
+  ],
+)
+
+#v(1em)
+
+// ════════════════════════════════════════════════════════════
+//  1. SÉCURITÉ ET PRÉVENTION DES RISQUES
+// ════════════════════════════════════════════════════════════
+
+= Sécurité et Prévention des Risques
+
+// GHS pictogram helper — renders one SVG icon at 30pt
+#let ghs(code) = image(
+  "../../GHS_Pictogrammes/" + code + ".svg",
+  width: 30pt,
+)
+
+// Inline row of icons with a small gap
+#let icons(..codes) = {
+  for c in codes.pos() { box(ghs(c)); h(3pt) }
+}
+
+#table(
+  columns: (1.8fr, auto, 2fr, 2fr),
+  stroke: 0.5pt,
+  inset: (x: 8pt, y: 10pt),
+  align: (left, center, left, left),
+
+  [*Produit chimique*], [*Pictogramme(s) GHS*], [*Mentions de danger*], [*Conseils de prudence*],
+
+  // Permanganate de potassium
+  [Permanganate de potassium \ $"KMnO"_4$ \ (~0,002 mol/L)],
+  [#icons("GHS03", "GHS07", "GHS08", "GHS09")],
+  [Comburant et nocif. Suspecté de nuire à la fertilité ou au fœtus. Très toxique pour les organismes aquatiques.],
+  [Conserver à l'écart de la chaleur et des matières combustibles. Porter des gants et des lunettes de protection. Éviter le rejet dans l'environnement.],
+
+  // Acide sulfurique
+  [Acide sulfurique \ $"H"_2"SO"_4$ \ (~4 mol/L)],
+  [#icons("GHS05")],
+  [Corrosif (provoque de graves brûlures de la peau et des lésions oculaires). Corrosif pour les métaux.],
+  [Porter des gants de protection, des vêtements de protection et un équipement de protection des yeux. Ne jamais verser d'eau dans l'acide.],
+
+  // Oxalate de sodium
+  [Oxalate de sodium \ $"Na"_2"C"_2"O"_4$ \ (~0,005 mol/L)],
+  [#icons("GHS07")],
+  [Nocif par contact cutané et par ingestion. Provoque une sévère irritation des yeux.],
+  [Porter des gants de protection et se laver les mains soigneusement après manipulation.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  2. MATÉRIEL ET RÉACTIFS
+// ════════════════════════════════════════════════════════════
+
+= Matériel et Réactifs
+
+== Appareillage
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, center, center),
+
+  [*Équipement*], [*Capacité / Portée*], [*Classe / Tolérance*], [*Norme de référence*],
+
+  [Bain d'eau (Bain-marie)],
+  [—],
+  [Régulation à 100 °C ± 2 °C],
+  [—],
+
+  [Burette à piston],
+  [10,0 mL],
+  [Classe A / ± 0,02 mL],
+  [ISO 385],
+
+  [Pipette jaugée],
+  [25,0 mL],
+  [Classe A / ± 0,03 mL],
+  [ISO 648],
+
+  [Pipette jaugée],
+  [50,0 mL],
+  [Classe A / ± 0,05 mL],
+  [ISO 648],
+
+  [Fiole jaugée],
+  [100 mL],
+  [Classe A / ± 0,10 mL],
+  [ISO 1042],
+
+  [Fiole jaugée],
+  [1 000 mL],
+  [Classe A / ± 0,40 mL],
+  [ISO 1042],
+
+  [Chronomètre],
+  [—],
+  [Résolution : 1 s],
+  [—],
+)
+
+== Réactifs
+
+#table(
+  columns: (2fr, 1.3fr, 2fr, 1.8fr),
+  stroke: 0.5pt,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Réactif*], [*Concentration*], [*Préparation / Pureté*], [*Conservation*],
+
+  [Permanganate de potassium $"KMnO"_4$],
+  [0,002 mol/L],
+  [Dissoudre 0,316 g de sel de qualité analytique dans de l'eau distillée, compléter à 1 000 mL dans une fiole jaugée.],
+  [Flacon en verre brun, à l'obscurité. Sensible à la lumière.],
+
+  [Oxalate de sodium $"Na"_2"C"_2"O"_4$],
+  [0,005 mol/L],
+  [Dissoudre 0,670 g d'oxalate de sodium préalablement séché à 120 °C pendant 2 h dans de l'eau, compléter à 1 000 mL.],
+  [Flacon en verre, stable 2 semaines à l'obscurité.],
+
+  [Acide sulfurique $"H"_2"SO"_4$],
+  [~4 mol/L (1/3 v/v)],
+  [Ajouter lentement 1 volume d'acide sulfurique concentré dans 3 volumes d'eau distillée sous agitation continue.],
+  [Flacon en verre ou plastique, stable indéfiniment.],
+)
+
+#note-box[
+  L'eau utilisée pour les préparations et les dilutions doit être exempte de composés organiques réducteurs (eau distillée fraîchement préparée ou purifiée de qualité analytique équivalente).
+]
+
+// ════════════════════════════════════════════════════════════
+//  3. PRINCIPE DE LA MÉTHODE
+// ════════════════════════════════════════════════════════════
+
+= Principe de la Méthode
+
+La méthode repose sur l'oxydation à chaud en milieu acide des matières organiques et inorganiques réductrices de l'eau par un excès connu de permanganate de potassium ($"KMnO"_4$).
+
+1. *Oxydation à chaud* : L'échantillon acidifié par l'acide sulfurique est chauffé au bain-marie bouillant en présence de permanganate. Le carbone organique et les réducteurs sont oxydés, tandis que le permanganate & est réduit :
+   $ "MnO"_4^- + 8 "H"^+ + 5 "e"^- -> "Mn"^(2+) + 4 "H"_2"O" $
+
+2. *Réduction de l'excès* : Un excès d'oxalate de sodium ($"Na"_2"C"_2"O"_4$) est ajouté pour détruire le permanganate restant non consommé :
+   $ "C"_2"O"_4^(2-) -> 2 "CO"_2 arrow.r + 2 "e"^- $
+   $ 2 "MnO"_4^- + 5 "C"_2"O"_4^(2-) + 16 "H"^+ -> 2 "Mn"^(2+) + 10 "CO"_2 arrow.r + 8 "H"_2"O" $
+
+3. *Titrage en retour* : L'excès d'oxalate n'ayant pas réagi avec le permanganate est titré à chaud par la solution de permanganate de potassium jusqu'à l'obtention d'une coloration rose pâle persistante.
+
+// ════════════════════════════════════════════════════════════
+//  4. MODE OPÉRATOIRE
+// ════════════════════════════════════════════════════════════
+
+= Mode Opératoire
+
+#warn-box("Vérifications préalables", [
+  - S'assurer que le bain-marie est stable à la température de *100 °C ± 2 °C*.
+  - Vérifier la propreté rigoureuse de toute la verrerie pour éviter l'introduction accidentelle de matières organiques.
+])
+
+== Préparation et Oxydation à Chaud
+
++ #step("Prélever", [*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A.])
++ #step("Transférer", [la prise d'essai dans un Erlenmeyer propre.])
++ #step("Ajouter", [*5 mL* de la solution d'acide sulfurique à ~4 mol/L.])
++ #step("Placer", [l'Erlenmeyer dans le bain-marie à *100 °C* pendant *10 minutes*.])
++ #step("Ajouter", [*10,00 mL* de la solution de permanganate de potassium à *0,002 mol/L*.])
++ #step("Chauffer", [le mélange au bain-marie à *100 °C* pendant exactement *10 minutes*.])
+
+== Titrage de l'Excès (Retour)
+
++ #step("Ajouter", [*10,00 mL* de la solution d'oxalate de sodium à *0,005 mol/L* dans le mélange chaud.])
++ #step("Agiter", [la solution jusqu'à sa décoloration complète.])
++ #step("Titrer", [la solution chaude à une température supérieure à *60 °C* avec la solution de permanganate de potassium à *0,002 mol/L* jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
++ #step("Noter", [le volume de solution de permanganate de potassium consommé pour le titrage, désigné par $V_1$ en millilitres.])
+
+== Essai à Blanc
+
++ #step("Prélever", [*100,0 mL* d'eau distillée de qualité analytique à l'aide d'une pipette jaugée de classe A.])
++ #step("Transférer", [l'eau distillée dans un Erlenmeyer propre.])
++ #step("Ajouter", [*5 mL* de la solution d'acide sulfurique à ~4 mol/L.])
++ #step("Placer", [l'Erlenmeyer dans le bain-marie à *100 °C* pendant *10 minutes*.])
++ #step("Ajouter", [*10,00 mL* de la solution de permanganate de potassium à *0,002 mol/L*.])
++ #step("Chauffer", [le mélange au bain-marie à *100 °C* pendant exactement *10 minutes*.])
++ #step("Ajouter", [*10,00 mL* de la solution d'oxalate de sodium à *0,005 mol/L* dans le mélange chaud.])
++ #step("Agiter", [la solution jusqu'à sa décoloration complète.])
++ #step("Titrer", [la solution chaude à une température supérieure à *60 °C* avec la solution de permanganate de potassium à *0,002 mol/L* jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
++ #step("Noter", [le volume de solution de permanganate de potassium consommé pour le titrage du blanc, désigné par $V_0$ en millilitres.])
+
+// ════════════════════════════════════════════════════════════
+//  5. EXPRESSION DES RÉSULTATS
+// ════════════════════════════════════════════════════════════
+
+= Expression des Résultats
+
+L'indice de permanganate $I_"PM"$, exprimé en milligrammes d'oxygène par litre ($"mg/L" "O"_2$), est calculé selon la formule suivante :
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ I_"PM" = frac((V_1 - V_0) times c("KMnO"_4) times 40 000, V_s) $
+  ]
+]
+
+#v(0.6em)
+
+#table(
+  columns: (auto, 1fr, auto),
+  stroke: 0.5pt,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Symbole*], [*Définition*], [*Unité*],
+
+  [$I_"PM"$], [Indice de permanganate de l'échantillon d'eau], [mg/L $O_2$],
+  [$V_1$], [Volume de permanganate de potassium consommé pour l'échantillon], [mL],
+  [$V_0$], [Volume de permanganate de potassium consommé pour le blanc], [mL],
+  [$c("KMnO"_4)$], [Concentration en quantité de matière de la solution de permanganate de potassium], [mol/L],
+  [$V_s$], [Volume de l'échantillon d'eau analysé (prise d'essai)], [mL],
+  [$40 000$], [Facteur stœchiométrique prenant en compte la masse molaire de l'oxygène ($5 times 8000$ mg/mol)], [mg/mol],
+)
+
+== Critères d'Acceptation QC
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Paramètre contrôlé*], [*Type de critère*], [*Limite d'acceptation*], [*Action corrective*],
+
+  [Écart sur duplicatas de titrage $|V_(1,1) - V_(1,2)|$],
+  [Répétabilité],
+  [$\le 0,10 "mL"$],
+  [Répeter le titrage en duplicata et vérifier le fonctionnement de la burette.],
+
+  [Volume d'essai à blanc $V_0$],
+  [Contamination / Pureté],
+  [$\le 0,20 "mL"$],
+  [Vérifier la qualité de l'eau distillée et procéder à un nettoyage acide de la verrerie.],
+
+  [Répétabilité de l'indice $I_"PM"$],
+  [Précision globale],
+  [$\le 0,2 "mg/L"$ (pour $I_"PM" < 2 "mg/L"$) \ ou $\le 10 %$ de la moyenne (pour $I_"PM" \ge 2 "mg/L"$)],
+  [Répéter l'analyse complète (oxydation et titrage).],
+)
+
+// ════════════════════════════════════════════════════════════
+//  6. RÉFÉRENCES NORMATIVES
+// ════════════════════════════════════════════════════════════
+
+= Références Normatives
+
+- *ISO 8467* : Qualité de l'eau — Détermination de l'indice de permanganate.
+- *ISO 385* : Verrerie de laboratoire — Burettes.
+- *ISO 648* : Verrerie de laboratoire — Pipettes à un trait.
+- *ISO 1042* : Verrerie de laboratoire — Fioles jaugées.
+- *ISO/CEI 17025* : Exigences générales concernant la compétence des laboratoires d'étalonnage et d'essais.

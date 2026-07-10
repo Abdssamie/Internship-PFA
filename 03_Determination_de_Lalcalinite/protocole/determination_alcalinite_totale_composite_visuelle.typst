@@ -1,0 +1,511 @@
+// ============================================================
+//  PROTOCOLE D'ANALYSE — DÉTERMINATION DE L'ALCALINITÉ
+//  Méthode Visuelle (Indicateurs Colorés)
+//  Référence normative : ISO 9963-1:1994
+// ============================================================
+
+// ── Global page settings ────────────────────────────────────
+#set page(
+  paper: "a4",
+  margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
+  numbering: "1 / 1",
+  number-align: right,
+  header: [
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[Détermination de l'Alcalinité (ISO 9963-1:1994)],
+      align(right)[Réf. : *PRO-CHM-004* | Rév. : *1.0*],
+    )
+    #line(length: 100%, stroke: 0.5pt)
+  ],
+  footer: [
+    #line(length: 100%, stroke: 0.5pt)
+    #set text(size: 8pt)
+    #align(center)[#context [Page #counter(page).display() / #counter(page).final().first()]]
+  ],
+)
+
+// ── Typography ───────────────────────────────────────────────
+#set text(font: "STIX Two Text", size: 10.5pt, lang: "fr")
+#show math.equation: set text(font: "STIX Two Math")
+#show raw: set text(font: "Source Code Pro", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set heading(numbering: "1.1.1")
+
+// ── Reusable components ─────────────────────────────────────
+
+// Section heading: full-width rule above, bold black text
+#show heading.where(level: 1): it => {
+  v(1.2em)
+  line(length: 100%, stroke: 1pt)
+  block(above: 0.4em, below: 0.6em)[
+    #set text(size: 13pt, weight: "bold")
+    #it
+  ]
+}
+
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  block(below: 0.4em)[
+    #set text(size: 11pt, weight: "bold")
+    #it
+  ]
+}
+
+// Safety callout — left thick rule, black border, no fill
+#let safety-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: 0.5pt),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚠ #title] \
+    #content
+  ]
+}
+
+// Warning callout — same structure, dashed border
+#let warn-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: (dash: "dashed", thickness: 0.5pt)),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚑ #title] \
+    #content
+  ]
+}
+
+// Informational note — indented, thin border
+#let note-box(content) = {
+  block(
+    width: 100%,
+    stroke: (left: 1.5pt, rest: none),
+    inset: (left: 12pt, right: 0pt, y: 4pt),
+  )[
+    #text(weight: "bold")[Note :] #content
+  ]
+}
+
+// Numbered procedure step — bold action verb
+#let step(verb: "", rest) = {
+  block(below: 0.5em)[
+    *#verb* #rest
+  ]
+}
+
+// ════════════════════════════════════════════════════════════
+//  ① DOCUMENT HEADER — Identification & Traceabilité
+// ════════════════════════════════════════════════════════════
+
+// ── Title block ──────────────────────────────────────────────
+#line(length: 100%, stroke: 1.5pt)
+#v(0.4em)
+#align(center)[
+  #text(size: 16pt, weight: "bold")[Détermination de l'Alcalinité Totale et Composite] \
+  #v(4pt)
+  #text(size: 11pt)[Méthode Visuelle (Indicateurs Colorés) — Norme ISO 9963-1:1994(F)]
+]
+#v(0.4em)
+#line(length: 100%, stroke: 1.5pt)
+
+#v(0.8em)
+
+// ── Identification table ─────────────────────────────────────
+#show table.cell: set text(hyphenate: false)
+#table(
+  columns: (auto, 1fr, auto, 1fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  // Row 1
+  [*Référence*],
+  [PRO-CHM-004],
+  [*Révision*],
+  [1.0],
+
+  // Row 2
+  [*Date d'application*],
+  [10/07/2026],
+  [*Statut*],
+  [En vigueur],
+
+  // Row 3
+  [*Rédigé par*],
+  table.cell(colspan: 3)[Abdessamie El Moubarki],
+
+  // Row 4
+  [*Domaine d'application*],
+  table.cell(colspan: 3)[
+    Eaux de surface, eaux souterraines, eaux potables et eaux brutes. \
+    Plage de mesure : 0,4 mmol/L à 20 mmol/L (les échantillons plus concentrés doivent être dilués).
+  ],
+)
+
+#v(1em)
+
+// ════════════════════════════════════════════════════════════
+//  1. SÉCURITÉ ET PRÉVENTION DES RISQUES
+// ════════════════════════════════════════════════════════════
+
+= Sécurité et Prévention des Risques
+
+// GHS pictogram helper — renders one SVG icon at 30pt
+#let ghs(code) = image(
+  "../../GHS_Pictogrammes/" + code + ".svg",
+  width: 30pt,
+)
+
+// Inline row of icons with a small gap
+#let icons(..codes) = {
+  for c in codes.pos() { box(ghs(c)); h(3pt) }
+}
+
+#table(
+  columns: (1.8fr, auto, 2fr, 2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 10pt),
+  align: (left, center, left, left),
+
+  [*Produit chimique*], [*Pictogramme(s) GHS*], [*Mentions de danger*], [*Conseils de prudence*],
+
+  // Carbonate de sodium
+  [Carbonate de sodium (2) \ $"Na"_2"CO"_3$ \ (~0,025 mol/L)],
+  [#icons("GHS07")],
+  [Provoque une sévére irritation des yeux.],
+  [Porter des gants de protection et un équipement de protection des yeux. Se laver les mains soigneusement après manipulation. En cas de contact oculaire, rincer avec précaution à l'eau pendant plusieurs minutes.],
+
+  // Acide chlorhydrique
+  [Acide chlorhydrique (3) et (4) \ $"HCl"$ \ (~0,10 mol/L et ~0,02 mol/L)],
+  [#icons("GHS05")],
+  [Peut être corrosif pour les métaux. Provoque de graves brûlures de la peau et de graves lésions des yeux.],
+  [Porter des gants de protection, des vêtements de protection et un équipement de protection des yeux. Éviter de respirer les vapeurs ou les brouillards. En cas de contact avec la peau, laver immédiatement et abondamment.],
+
+  // Phenolphthalein
+  [Indicateur phénolphtaléine (5) \ (solvant éthanol)],
+  [#icons("GHS07", "GHS08")],
+  [Susceptible de provoquer le cancer. Liquide et vapeurs très inflammables. Provoque une irritation des yeux.],
+  [Tenir à l'écart de la chaleur, des étincelles et des flammes nues. Porter des gants de protection et un équipement de protection des yeux. Éviter l'inhalation des vapeurs et tout contact cutané.],
+
+  // Mixed indicator
+  [Indicateur mixte (6) \ (vert de bromocrésol - rouge de méthyle dans l'éthanol)],
+  [#icons("GHS07")],
+  [Liquide et vapeurs très inflammables. Provoque une irritation cutanée et oculaire.],
+  [Tenir à l'écart de la chaleur et des flammes nues. Porter des gants et des lunettes de protection. Laver abondamment les mains après manipulation.],
+
+  // Sodium thiosulfate
+  [Thiosulfate de sodium (7) \ $"Na"_2"S"_2"O"_3$ \ (~0,1 mol/L)],
+  [—],
+  [Non classé comme dangereux selon le règlement GHS.],
+  [Respecter les règles générales de manipulation en laboratoire. Porter des lunettes de protection.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  2. MATÉRIEL ET RÉACTIFS
+// ════════════════════════════════════════════════════════════
+
+= Matériel et Réactifs
+
+== Appareillage
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, center, center),
+
+  [*Équipement*], [*Capacité / Portée*], [*Classe / Tolérance*], [*Norme de référence*],
+
+  [Burette de précision],
+  [10,0 mL],
+  [Classe A / ± 0,02 mL \ (graduation de 0,02 mL)],
+  [ISO 385],
+
+  [Pipette jaugée],
+  [100,0 mL],
+  [Classe A / ± 0,08 mL],
+  [ISO 648],
+
+  [Pipette jaugée],
+  [25,0 mL],
+  [Classe A / ± 0,03 mL],
+  [ISO 648],
+
+  [Pipette jaugée],
+  [10,0 mL],
+  [Classe A / ± 0,02 mL],
+  [ISO 648],
+
+  [Fiole jaugée],
+  [1 000 mL],
+  [Classe A / ± 0,40 mL],
+  [ISO 1042],
+
+  [Fiole jaugée],
+  [500 mL],
+  [Classe A / ± 0,20 mL],
+  [ISO 1042],
+
+  [Erlenmeyer],
+  [250 mL],
+  [Pour titrage visuel],
+  [—],
+
+  [Capsule en porcelaine blanche],
+  [—],
+  [Pour améliorer la visualisation du changement de couleur],
+  [—],
+)
+
+== Réactifs
+
+#table(
+  columns: (1.8fr, 1.2fr, 2.2fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, left, left),
+
+  [*Réactif*], [*Concentration*], [*Préparation / Pureté*], [*Conservation*],
+
+  [Eau purifiée (1)],
+  [—],
+  [Qualité 2 de l'ISO 3696. Conductivité inférieure à *0,1 mS/m* et exempte de concentrations interférentes en acides et bases.],
+  [À utiliser fraîchement préparée.],
+
+  [Carbonate de sodium, solution étalon (2)],
+  [~0,025 mol/L \ ($c("Na"_2"CO"_3)$)],
+  [Sécher *3 g à 5 g* de carbonate de sodium anhydre ($"Na"_2"CO"_3$) à *250 °C ± 10 °C* pendant *4 heures*. Refroidir en dessiccateur. Dissoudre 2,65 g ± 0,20 g ($m$, pesée à *0,001 g* près) dans de l'eau (1) et diluer à *1 000 mL* dans une fiole jaugée.],
+  [Réfrigérateur entre *4 °C et 8 °C*. Stable pendant 1 mois maximum.],
+
+  [Acide chlorhydrique, solution (3)],
+  [~0,10 mol/L \ ($c("HCl")$)],
+  [Diluer *8,6 mL ± 0,1 mL* d'acide chlorhydrique concentré (densité 1,16 g/mL) à *1 000 mL* avec de l'eau (1) dans une fiole jaugée. Étalonner hebdomadairement.],
+  [Flacon en verre ou en PE, stable plusieurs mois.],
+
+  [Acide chlorhydrique, solution (4)],
+  [~0,02 mol/L \ ($c("HCl")$)],
+  [Pipeter *100 mL ± 1 mL* de solution (3) dans une fiole jaugée de *500 mL*, diluer au volume avec de l'eau (1) et bien mélanger.],
+  [À préparer extemporanément (juste avant l'analyse).],
+
+  [Solution de phénolphtaléine (5)],
+  [—],
+  [Dissoudre *1,0 g ± 0,1 g* de phénolphtaléine dans *100 mL ± 2 mL* d'éthanol (> 90% v/v) et diluer avec de l'eau (1) à *200 mL ± 4 mL*. Bien mélanger.],
+  [Flacon en verre, stable plusieurs mois.],
+
+  [Solution d'indicateur mixte (6)],
+  [—],
+  [Dissoudre *0,200 g ± 0,005 g* de vert de bromocrésol et *0,015 g ± 0,002 g* de rouge de méthyle dans *100 mL ± 4 mL* d'éthanol (> 90% v/v).],
+  [Flacon en verre brun, stable plusieurs mois.],
+
+  [Thiosulfate de sodium, solution (7)],
+  [~0,1 mol/L \ ($c("Na"_2"S"_2"O"_3)$)],
+  [Dissoudre *2,5 g ± 0,2 g* de thiosulfate de sodium pentahydraté ($"Na"_2"S"_2"O"_3 · 5"H"_2"O"$) dans *100 mL ± 5 mL* d'eau (1).],
+  [Flacon en verre brun au réfrigérateur. Stable pendant 6 mois maximum.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  3. PRINCIPE DE LA MÉTHODE
+// ════════════════════════════════════════════════════════════
+
+= Principe de la Méthode
+
+La détermination de l'alcalinité repose sur le titrage des bases contenues dans l'échantillon d'eau par une solution d'acide chlorhydrique étalonnée. Les points d'équivalence correspondant aux réactions chimiques majeures sont détectés visuellement par le changement de couleur d'indicateurs de pH colorés :
+
+1.  *Alcalinité composite (phénolphtaléine) à pH 8,3 ($A_p$)* : Détectée par le passage de la couleur *rose/rouge* à la décoloration complète en présence de phénolphtaléine. Représente la neutralisation complète des hydroxydes et la conversion de la moitié du carbonate en hydrogénocarbonate :
+    $ "OH"^- + "H"^+ -> "H"_2"O" $
+    $ "CO"_3^(2-) + "H"^+ -> "HCO"_3^- $
+
+2.  *Alcalinité totale à pH 4,5 ($A_T$)* : Détectée par le passage de la couleur *bleu-vert* à la coloration intermédiaire *grise* en présence de l'indicateur mixte vert de bromocrésol - rouge de méthyle. Représente la neutralisation de tous les ions hydrogénocarbonate de l'échantillon :
+    $ "HCO"_3^- + "H"^+ -> "CO"_2 arrow.r + "H"_2"O" $
+
+// ════════════════════════════════════════════════════════════
+//  4. MODE OPÉRATOIRE
+// ════════════════════════════════════════════════════════════
+
+= Mode Opératoire
+
+#warn-box(title: "Vérifications préalables et virage", [
+  - Placer l'Erlenmeyer de titrage sur la capsule en porcelaine blanche pour faciliter la détection précise des changements de couleur des indicateurs.
+  - Pour le titrage final de l'alcalinité totale (pH 4,5), le point final de l'indicateur mixte correspond à la coloration grise (virage intermédiaire entre le bleu-vert basique et le rose/rouge acide).
+])
+
+== Étalonnage de la Solution d'Acide Chlorhydrique ~0,10 mol/L
++ #step(verb: "Pipeter")[*25,0 mL* de la solution étalon de carbonate de sodium (2) à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Transférer")[la prise d'essai dans l'Erlenmeyer de 250 mL.]
++ #step(verb: "Ajouter")[*75 mL ± 5 mL* d'eau purifiée (1).]
++ #step(verb: "Ajouter")[*0,1 mL ± 0,02 mL* de solution d'indicateur mixte (6).]
++ #step(verb: "Titrer")[sous agitation constante avec la solution d'acide chlorhydrique ~0,10 mol/L (3) jusqu'à disparition de la couleur bleu-vert.]
++ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé, noté $V_2$ en millilitres.]
++ #step(verb: "Titrer le blanc")[en répétant exactement les étapes 1 à 6 avec *100 mL ± 5 mL* d'eau purifiée (1) au lieu de la solution étalon de carbonate de sodium. Noter le volume consommé, noté $V_3$ en millilitres.]
++ #step(verb: "Calculer")[la concentration réelle de la solution d'acide chlorhydrique (3), notée $c("HCl", 1)$ en moles par litre, selon la formule de calcul.]
+
+== Détermination de l'Alcalinité Composite ($A_p$ à pH 8,3)
++ #step(verb: "Éliminer les agents oxydants")[si du chlore libre est présent dans l'échantillon, ajouter *0,1 mL* de solution de thiosulfate de sodium (7) pour *200 mL* d'échantillon (cette dose permet d'éliminer jusqu'à 1,8 mg/L de chlore libre).]
++ #step(verb: "Pipeter")[*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Transférer")[la prise d'essai dans l'Erlenmeyer de 250 mL.]
++ #step(verb: "Ajouter")[*0,1 mL ± 0,02 mL* de solution d'indicateur phénolphtaléine (5).]
++ #step(verb: "Déterminer")[l'alcalinité composite : si aucune coloration rose ne se développe, noter l'alcalinité composite $A_p = 0 "mmol/L"$ et passer directement à la section suivante (titrage de l'alcalinité totale).]
++ #step(verb: "Sélectionner")[la concentration de l'acide à utiliser pour le titrage : utiliser la solution (3) d'acide chlorhydrique ~0,1 mol/L si l'alcalinité de l'échantillon est comprise entre *4 mmol/L et 20 mmol/L* ; utiliser la solution (4) d'acide chlorhydrique ~0,02 mol/L si l'alcalinité est comprise entre *0,4 mmol/L et 4 mmol/L*.]
++ #step(verb: "Titrer")[l'échantillon sous agitation avec la solution d'acide chlorhydrique sélectionnée jusqu'à disparition complète de la coloration rose.]
++ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé pour atteindre ce point de virage, noté $V_s$ en millilitres.]
++ #step(verb: "Conserver")[le mélange dans l'Erlenmeyer pour réaliser immédiatement la détermination de l'alcalinité totale.]
+
+== Détermination de l'Alcalinité Totale ($A_T$ à pH 4,5)
++ #step(verb: "Ajouter")[*0,1 mL ± 0,02 mL* de solution d'indicateur mixte (6) à la solution issue de l'étape précédente (conservée après la décoloration de la phénolphtaléine).]
++ #step(verb: "Continuer")[le titrage sous agitation constante en utilisant la même solution d'acide chlorhydrique.]
++ #step(verb: "Arrêter")[le titrage lorsque la couleur de la solution vire du vert-bleu au gris.]
++ #step(verb: "Noter")[le volume cumulé total d'acide chlorhydrique consommé depuis le début du titrage (volume pour décolorer la phénolphtaléine plus le volume pour virer l'indicateur mixte au gris), noté $V_e$ en millilitres.]
+
+// ════════════════════════════════════════════════════════════
+//  5. EXPRESSION DES RÉSULTATS
+// ════════════════════════════════════════════════════════════
+
+= Expression des Résultats
+
+== Calculs
+
+=== Concentration Réelle de l'Acide Chlorhydrique ~0,10 mol/L
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ c("HCl", 1) = (m times V_1) / ("53,00" times (V_2 - V_3)) $
+  ]
+]
+
+Avec :
+- $c("HCl", 1)$ : concentration réelle de la solution d'acide chlorhydrique (3) [mol/L] ;
+- $m$ : masse de carbonate de sodium anhydre ($"Na"_2"CO"_3$) pesée pour la solution étalon (2) [g] ;
+- $V_1$ : volume de solution étalon de carbonate de sodium (2) prélevé ($V_1 = 25 "mL"$) ;
+- $V_2$ : volume de solution d'acide chlorhydrique (3) consommé pour le titrage du carbonate [mL] ;
+- $V_3$ : volume de solution d'acide chlorhydrique (3) consommé pour le blanc [mL] ;
+- $"53,00"$ : masse équivalente du carbonate de sodium (soit $105","99 / 2$) [g/eq].
+
+=== Alcalinité Composite ($A_p$)
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ A_p = (c("HCl") times V_s times 1000) / V_4 $
+  ]
+]
+
+=== Alcalinité Totale ($A_T$)
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ A_T = (c("HCl") times V_e times 1000) / V_4 $
+  ]
+]
+
+#v(0.6em)
+
+#table(
+  columns: (auto, 1fr, auto),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Symbole*], [*Définition*], [*Unité*],
+
+  [$A_p$], [Alcalinité composite (phénolphtaléine) de l'échantillon d'eau], [mmol/L d'ions $H^+$],
+  [$A_T$], [Alcalinité totale de l'échantillon d'eau], [mmol/L d'ions $H^+$],
+  [$c("HCl")$], [Concentration réelle de la solution d'acide chlorhydrique utilisée (3) ou (4)], [mol/L],
+  [$V_s$], [Volume de solution d'acide chlorhydrique consommé pour atteindre le point de virage de la phénolphtaléine], [mL],
+  [$V_e$], [Volume total de solution d'acide chlorhydrique consommé pour atteindre le point de virage de l'indicateur mixte], [mL],
+  [$V_4$], [Volume de la prise d'essai d'échantillon d'eau (normalement 100,0 mL)], [mL],
+)
+
+== Facteurs de Conversion des Unités d'Alcalinité
+
+L'alcalinité de l'eau peut également être exprimée dans d'autres unités. Les facteurs de conversion théoriques permettant de passer des millimoles par litre (mmol/L) d'ions $"H"^+$ à d'autres expressions courantes sont résumés dans le tableau ci-dessous :
+
+#table(
+  columns: (2.5fr, 1.5fr, 2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, left),
+
+  [*Unité de destination*], [*Facteur de multiplication*], [*Équivalence pour 1 mmol/L H⁺*],
+
+  [mmol/L de $"CaCO"_3$],
+  [0,50],
+  [0,50 mmol/L $"CaCO"_3$],
+
+  [mg/L de $"CaCO"_3$ (ppm)],
+  [50,0],
+  [50,0 mg/L $"CaCO"_3$],
+
+  [mg/L de $"HCO"_3^-$],
+  [61,0],
+  [61,0 mg/L $"HCO"_3^-$],
+
+  [Degré français (°f)],
+  [5,00],
+  [5,00 °f (soit 50 mg/L $"CaCO"_3$)],
+
+  [Degré allemand (°d)],
+  [2,80],
+  [2,80 °d (soit 28 mg/L $"CaO"$)],
+
+  [Degré anglais (Clark)],
+  [3,50],
+  [3,50 Clark (soit 1 grain $"CaCO"_3$ / gallon anglais)],
+
+  [Degré américain (US)],
+  [2,90],
+  [2,90 °US],
+)
+
+== Critères de Contrôle Qualité (QC) et Actions Correctives
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, center, left),
+
+  [*Paramètre contrôlé*], [*Type de critère*], [*Limite d'acceptation*], [*Action corrective*],
+
+  [Écart sur duplicatas de titrage de l'acide $|V_2 - V'_2|$],
+  [Répétabilité étalonnage],
+  [$<= 0,10 "mL"$],
+  [Répeter les titrages d'étalonnage. Vérifier la burette et rincer l'électrode.],
+
+  [Volume de blanc pour l'étalonnage $V_3$],
+  [Contamination eau distillée],
+  [$<= 0,10 "mL"$],
+  [Remplacer l'eau distillée, vérifier sa conductivité et nettoyer la verrerie.],
+
+  [Répétabilité des duplicatas de l'échantillon $|A_(T, 1) - A_(T, 2)|$],
+  [Précision de l'analyse],
+  [$<= 0,05 "mmol/L"$ (pour $A_T < 1 "mmol/L"$) \ ou $<= 5 %$ de la moyenne (pour $A_T >= 1 "mmol/L"$)],
+  [Répéter le titrage en double. S'assurer de la bonne visibilité de l'éclairage ambiant pour les virages. Remplacer l'échantillon.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  6. RÉFÉRENCES NORMATIVES
+// ════════════════════════════════════════════════════════════
+
+= Références Normatives
+
+- *ISO 9963-1:1994* : Qualité de l'eau — Détermination de l'alcalinité — Partie 1: Détermination de l'alcalinité totale et composite.
+- *ISO 385* : Verrerie de laboratoire — Burettes.
+- *ISO 648* : Verrerie de laboratoire — Pipettes à un trait.
+- *ISO 1042* : Verrerie de laboratoire — Fioles jaugées.
+- *ISO 3696* : Eau pour laboratoire à usage analytique — Spécification et méthodes d'essai.
+- *ISO/CEI 17025* : Exigences générales concernant la compétence des laboratoires d'étalonnage et d'essais.

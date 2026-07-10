@@ -3,7 +3,7 @@
 Voici l'enchaînement des étapes opératoires et des critères de validation analytiques pour la méthode visuelle uniquement :
 
 ```mermaid
-graph TD
+graph LR
     %% Début de l'analyse
     Start(["Début de l'analyse"]) --> Prep["Préparer la verrerie de classe A<br>et la capsule en porcelaine blanche"]
     Prep --> Dispatch{"Action à réaliser ?"}

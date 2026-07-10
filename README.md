@@ -95,3 +95,11 @@ Toutes les tâches hebdomadaires, les manipulations effectuées, et les jalons f
 * **`PRO` (Type de Document)** : Signifie **Protocole** (ou *Procédure*). Indique au lecteur que le document présente une procédure opérationnelle à exécuter sur la paillasse.
 * **`CHM` (Domaine Thématique)** : Signifie **Chimie** (Chemistry). Indique le département ou le domaine analytique concerné.
 * **`001` (Numéro Séquentiel)** : Indique qu'il s'agit du premier protocole enregistré dans la catégorie Chimie.
+
+---
+
+## 📋 Directives de Rédaction des Fiches de Manipulation
+
+Pour assurer la conformité absolue avec les normes internationales (ex: ISO), appliquez les règles suivantes :
+*   **Exactitude normative** : Les fiches doivent décrire uniquement les éléments requis et spécifiés dans la norme ISO associée.
+*   **Critères de Contrôle Qualité (QC)** : Les tableaux de critères QC ne sont **pas obligatoires** et ne doivent **pas** être inclus à moins d'être quantitativement exigés par la norme ISO de référence (afin d'éviter d'introduire des critères arbitraires non standardisés).

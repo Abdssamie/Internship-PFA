@@ -104,7 +104,7 @@ Toute fiche de manipulation doit être découpée selon les chapitres suivants :
 7.  **5. Expression des Résultats** :
     *   Formule de calcul centrée et encadrée (`0.5pt`).
     *   Tableau de définition des variables avec leurs unités.
-    *   Tableau des critères QC (répétabilité des duplicatas et tolérance du blanc).
+    *   Tableau des critères QC (uniquement si spécifié quantitativement dans la norme ISO de référence — facultatif sinon, éviter d'ajouter des critères arbitraires non-officiels).
 8.  **6. Références Normatives** :
     *   Liste à puces des normes citées (ex: ISO 385, ISO 648, ISO 1042, ISO/CEI 17025).
 

@@ -36,9 +36,7 @@ graph TD
     %% Enregistrement et Validation
     S_Ap_Zero --> S_Tit_AT
     S_Tit_AT --> S_Rec_Ve["Enregistrer le volume total Ve"]
-    S_Rec_Ve --> QC{"Duplicatas validés ?<br>|Ve1 - Ve2| <= 0,10 mL"}
-    QC -->|Non| QC_Fail["Vérifier l'électrode/burette<br>et répéter le titrage"]
-    QC -->|Oui| Calc["Calculer Ap et AT dans les conditions conformes"]
+    S_Rec_Ve --> Calc["Calculer Ap et AT dans les conditions conformes"]
 
     %% Consolidation finale
     E_End --> Calc
@@ -50,8 +48,6 @@ graph TD
     style Final fill:#fff,stroke:#000,stroke-width:2px;
     style Dispatch fill:#fff,stroke:#000,stroke-width:2px;
     style S2 fill:#fff,stroke:#000,stroke-width:2px;
-    style QC fill:#fff,stroke:#000,stroke-width:2px;
-    style QC_Fail fill:#fff,stroke:#000,stroke-width:3px;
     
     style E1 fill:#fff,stroke:#000,stroke-width:1px;
     style E2 fill:#fff,stroke:#000,stroke-width:1px;

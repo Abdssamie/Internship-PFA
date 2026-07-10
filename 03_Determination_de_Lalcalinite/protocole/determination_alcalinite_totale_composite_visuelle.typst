@@ -175,26 +175,26 @@
   // Carbonate de sodium
   [Carbonate de sodium (2) \ $"Na"_2"CO"_3$ \ (~0,025 mol/L)],
   [#icons("GHS07")],
-  [Provoque une sévére irritation des yeux.],
+  [Provoque une sévère irritation des yeux.],
   [Porter des gants de protection et un équipement de protection des yeux. Se laver les mains soigneusement après manipulation. En cas de contact oculaire, rincer avec précaution à l'eau pendant plusieurs minutes.],
 
   // Acide chlorhydrique
   [Acide chlorhydrique (3) et (4) \ $"HCl"$ \ (~0,10 mol/L et ~0,02 mol/L)],
-  [#icons("GHS05")],
-  [Peut être corrosif pour les métaux. Provoque de graves brûlures de la peau et de graves lésions des yeux.],
-  [Porter des gants de protection, des vêtements de protection et un équipement de protection des yeux. Éviter de respirer les vapeurs ou les brouillards. En cas de contact avec la peau, laver immédiatement et abondamment.],
+  [—],
+  [Non classifié comme dangereux aux concentrations de travail (inférieures à 1 %).],
+  [Porter des gants de protection et un équipement de protection des yeux par mesure de précaution de laboratoire générale. En cas de projection oculaire ou cutanée, rincer abondamment à l'eau.],
 
   // Phenolphthalein
   [Indicateur phénolphtaléine (5) \ (solvant éthanol)],
-  [#icons("GHS07", "GHS08")],
+  [#icons("GHS02", "GHS07", "GHS08")],
   [Susceptible de provoquer le cancer. Liquide et vapeurs très inflammables. Provoque une irritation des yeux.],
-  [Tenir à l'écart de la chaleur, des étincelles et des flammes nues. Porter des gants de protection et un équipement de protection des yeux. Éviter l'inhalation des vapeurs et tout contact cutané.],
+  [Tenir à l'écart de la chaleur, des étincelles et des flammes nues. Porter des gants de protection et un équipement de protection des yeux. Éviter l'inhalation des vapeurs et tout contact contact direct. Manipuler à l'écart des sources d'étincelles.],
 
   // Mixed indicator
   [Indicateur mixte (6) \ (vert de bromocrésol - rouge de méthyle dans l'éthanol)],
-  [#icons("GHS07")],
+  [#icons("GHS02", "GHS07")],
   [Liquide et vapeurs très inflammables. Provoque une irritation cutanée et oculaire.],
-  [Tenir à l'écart de la chaleur et des flammes nues. Porter des gants et des lunettes de protection. Laver abondamment les mains après manipulation.],
+  [Tenir à l'écart de la chaleur, des étincelles et des flammes nues. Porter des gants de protection et des lunettes de protection. Laver abondamment les mains après manipulation.],
 
   // Sodium thiosulfate
   [Thiosulfate de sodium (7) \ $"Na"_2"S"_2"O"_3$ \ (~0,1 mol/L)],
@@ -335,7 +335,7 @@ La détermination de l'alcalinité repose sur le titrage des bases contenues dan
 ])
 
 == Étalonnage de la Solution d'Acide Chlorhydrique ~0,10 mol/L
-+ #step(verb: "Pipeter")[*25,0 mL* de la solution étalon de carbonate de sodium (2) à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Pipeter")[*25,0 mL* de la solution étalon de carbonate de sodium (2) à l'aide d'une pipette jaugée de classe A (volume noté $V_1$).]
 + #step(verb: "Transférer")[la prise d'essai dans l'Erlenmeyer de 250 mL.]
 + #step(verb: "Ajouter")[*75 mL ± 5 mL* d'eau purifiée (1).]
 + #step(verb: "Ajouter")[*0,1 mL ± 0,02 mL* de solution d'indicateur mixte (6).]
@@ -345,21 +345,21 @@ La détermination de l'alcalinité repose sur le titrage des bases contenues dan
 + #step(verb: "Calculer")[la concentration réelle de la solution d'acide chlorhydrique (3), notée $c("HCl", 1)$ en moles par litre, selon la formule de calcul.]
 
 == Détermination de l'Alcalinité Composite ($A_p$ à pH 8,3)
-+ #step(verb: "Éliminer les agents oxydants")[si du chlore libre est présent dans l'échantillon, ajouter *0,1 mL* de solution de thiosulfate de sodium (7) pour *200 mL* d'échantillon (cette dose permet d'éliminer jusqu'à 1,8 mg/L de chlore libre).]
-+ #step(verb: "Pipeter")[*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Éliminer les agents oxydants")[si du chlore libre est présent dans l'échantillon, ajouter *0,05 mL* de solution de thiosulfate de sodium (7) pour la prise d'essai de *100,0 mL* (cette dose permet d'éliminer jusqu'à 1,8 mg/L de chlore libre).]
++ #step(verb: "Pipeter")[*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A (volume de la prise d'essai noté $V_4$).]
 + #step(verb: "Transférer")[la prise d'essai dans l'Erlenmeyer de 250 mL.]
 + #step(verb: "Ajouter")[*0,1 mL ± 0,02 mL* de solution d'indicateur phénolphtaléine (5).]
 + #step(verb: "Déterminer")[l'alcalinité composite : si aucune coloration rose ne se développe, noter l'alcalinité composite $A_p = 0 "mmol/L"$ et passer directement à la section suivante (titrage de l'alcalinité totale).]
 + #step(verb: "Sélectionner")[la concentration de l'acide à utiliser pour le titrage : utiliser la solution (3) d'acide chlorhydrique ~0,1 mol/L si l'alcalinité de l'échantillon est comprise entre *4 mmol/L et 20 mmol/L* ; utiliser la solution (4) d'acide chlorhydrique ~0,02 mol/L si l'alcalinité est comprise entre *0,4 mmol/L et 4 mmol/L*.]
 + #step(verb: "Titrer")[l'échantillon sous agitation avec la solution d'acide chlorhydrique sélectionnée jusqu'à disparition complète de la coloration rose.]
-+ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé pour atteindre ce point de virage, noté $V_s$ en millilitres.]
++ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé pour atteindre ce point de virage, noté $V_5$ en millilitres.]
 + #step(verb: "Conserver")[le mélange dans l'Erlenmeyer pour réaliser immédiatement la détermination de l'alcalinité totale.]
 
 == Détermination de l'Alcalinité Totale ($A_T$ à pH 4,5)
 + #step(verb: "Ajouter")[*0,1 mL ± 0,02 mL* de solution d'indicateur mixte (6) à la solution issue de l'étape précédente (conservée après la décoloration de la phénolphtaléine).]
 + #step(verb: "Continuer")[le titrage sous agitation constante en utilisant la même solution d'acide chlorhydrique.]
 + #step(verb: "Arrêter")[le titrage lorsque la couleur de la solution vire du vert-bleu au gris.]
-+ #step(verb: "Noter")[le volume cumulé total d'acide chlorhydrique consommé depuis le début du titrage (volume pour décolorer la phénolphtaléine plus le volume pour virer l'indicateur mixte au gris), noté $V_e$ en millilitres.]
++ #step(verb: "Noter")[le volume cumulé total d'acide chlorhydrique consommé depuis le début du titrage (volume pour décolorer la phénolphtaléine plus le volume pour virer l'indicateur mixte au gris), noté $V_6$ en millilitres.]
 
 // ════════════════════════════════════════════════════════════
 //  5. EXPRESSION DES RÉSULTATS
@@ -388,6 +388,21 @@ Avec :
 - $V_3$ : volume de solution d'acide chlorhydrique (3) consommé pour le blanc [mL] ;
 - $"53,00"$ : masse équivalente du carbonate de sodium (soit $105","99 / 2$) [g/eq].
 
+=== Concentration Réelle de l'Acide Chlorhydrique ~0,02 mol/L
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ c("HCl", 2) = "0,20" times c("HCl", 1) $
+  ]
+]
+
+Avec :
+- $c("HCl", 1)$ : concentration réelle de la solution d'acide chlorhydrique (3) [mol/L] ;
+- $c("HCl", 2)$ : concentration réelle de la solution d'acide chlorhydrique (4) [mol/L].
+
 === Alcalinité Composite ($A_p$)
 
 #align(center)[
@@ -395,7 +410,7 @@ Avec :
     stroke: 0.5pt,
     inset: (x: 20pt, y: 14pt),
   )[
-    $ A_p = (c("HCl") times V_s times 1000) / V_4 $
+    $ A_p = (c("HCl") times V_5 times 1000) / V_4 $
   ]
 ]
 
@@ -406,7 +421,7 @@ Avec :
     stroke: 0.5pt,
     inset: (x: 20pt, y: 14pt),
   )[
-    $ A_T = (c("HCl") times V_e times 1000) / V_4 $
+    $ A_T = (c("HCl") times V_6 times 1000) / V_4 $
   ]
 ]
 
@@ -423,8 +438,8 @@ Avec :
   [$A_p$], [Alcalinité composite (phénolphtaléine) de l'échantillon d'eau], [mmol/L d'ions $H^+$],
   [$A_T$], [Alcalinité totale de l'échantillon d'eau], [mmol/L d'ions $H^+$],
   [$c("HCl")$], [Concentration réelle de la solution d'acide chlorhydrique utilisée (3) ou (4)], [mol/L],
-  [$V_s$], [Volume de solution d'acide chlorhydrique consommé pour atteindre le point de virage de la phénolphtaléine], [mL],
-  [$V_e$], [Volume total de solution d'acide chlorhydrique consommé pour atteindre le point de virage de l'indicateur mixte], [mL],
+  [$V_5$], [Volume de solution d'acide chlorhydrique consommé pour atteindre le point de virage de la phénolphtaléine], [mL],
+  [$V_6$], [Volume total de solution d'acide chlorhydrique consommé pour atteindre le point de virage de l'indicateur mixte], [mL],
   [$V_4$], [Volume de la prise d'essai d'échantillon d'eau (normalement 100,0 mL)], [mL],
 )
 
@@ -468,33 +483,6 @@ L'alcalinité de l'eau peut également être exprimée dans d'autres unités. Le
   [Degré américain (US)],
   [2,90],
   [2,90 °US],
-)
-
-== Critères de Contrôle Qualité (QC) et Actions Correctives
-
-#table(
-  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
-  stroke: 0.5pt,
-  fill: none,
-  inset: (x: 8pt, y: 6pt),
-  align: (left, center, center, left),
-
-  [*Paramètre contrôlé*], [*Type de critère*], [*Limite d'acceptation*], [*Action corrective*],
-
-  [Écart sur duplicatas de titrage de l'acide $|V_2 - V'_2|$],
-  [Répétabilité étalonnage],
-  [$<= 0,10 "mL"$],
-  [Répeter les titrages d'étalonnage. Vérifier la burette et rincer l'électrode.],
-
-  [Volume de blanc pour l'étalonnage $V_3$],
-  [Contamination eau distillée],
-  [$<= 0,10 "mL"$],
-  [Remplacer l'eau distillée, vérifier sa conductivité et nettoyer la verrerie.],
-
-  [Répétabilité des duplicatas de l'échantillon $|A_(T, 1) - A_(T, 2)|$],
-  [Précision de l'analyse],
-  [$<= 0,05 "mmol/L"$ (pour $A_T < 1 "mmol/L"$) \ ou $<= 5 %$ de la moyenne (pour $A_T >= 1 "mmol/L"$)],
-  [Répéter le titrage en double. S'assurer de la bonne visibilité de l'éclairage ambiant pour les virages. Remplacer l'échantillon.],
 )
 
 // ════════════════════════════════════════════════════════════

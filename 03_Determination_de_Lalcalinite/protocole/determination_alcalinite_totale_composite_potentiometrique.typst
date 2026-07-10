@@ -175,14 +175,14 @@
   // Carbonate de sodium
   [Carbonate de sodium (2) \ $"Na"_2"CO"_3$ \ (~0,025 mol/L)],
   [#icons("GHS07")],
-  [Provoque une sévére irritation des yeux.],
+  [Provoque une sévère irritation des yeux.],
   [Porter des gants de protection et un équipement de protection des yeux. Se laver les mains soigneusement après manipulation. En cas de contact oculaire, rincer avec précaution à l'eau pendant plusieurs minutes.],
 
   // Acide chlorhydrique
   [Acide chlorhydrique (3) et (4) \ $"HCl"$ \ (~0,10 mol/L et ~0,02 mol/L)],
-  [#icons("GHS05")],
-  [Peut être corrosif pour les métaux. Provoque de graves brûlures de la peau et de graves lésions des yeux.],
-  [Porter des gants de protection, des vêtements de protection et un équipement de protection des yeux. Éviter de respirer les vapeurs ou les brouillards. En cas de contact avec la peau, laver immédiatement et abondamment.],
+  [—],
+  [Non classifié comme dangereux aux concentrations de travail (inférieures à 1 %).],
+  [Porter des gants de protection et un équipement de protection des yeux par mesure de précaution de laboratoire générale. En cas de projection oculaire ou cutanée, rincer abondamment à l'eau.],
 
   // Solutions tampons pH
   [Solutions tampons d'étalonnage \ (pH 4, 7, 9)],
@@ -313,7 +313,7 @@ La détermination de l'alcalinité repose sur le titrage potentiométrique des b
 ])
 
 == Étalonnage de la Solution d'Acide Chlorhydrique ~0,10 mol/L
-+ #step(verb: "Pipeter")[*25,0 mL* de la solution étalon de carbonate de sodium (2) à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Pipeter")[*25,0 mL* de la solution étalon de carbonate de sodium (2) à l'aide d'une pipette jaugée de classe A (volume noté $V_1$).]
 + #step(verb: "Transférer")[la prise d'essai dans le récipient de titrage.]
 + #step(verb: "Ajouter")[*75 mL ± 5 mL* d'eau purifiée (1).]
 + #step(verb: "Placer")[le récipient de titrage sur l'agitateur magnétique et introduire le barreau magnétique.]
@@ -325,21 +325,21 @@ La détermination de l'alcalinité repose sur le titrage potentiométrique des b
 + #step(verb: "Calculer")[la concentration réelle de la solution d'acide chlorhydrique (3), notée $c("HCl", 1)$ en moles par litre, selon la formule de calcul.]
 
 == Détermination de l'Alcalinité Composite ($A_p$ à pH 8,3)
-+ #step(verb: "Pipeter")[*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Pipeter")[*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A (volume de la prise d'essai noté $V_4$).]
 + #step(verb: "Transférer")[la prise d'essai dans le vase de titrage.]
 + #step(verb: "Introduire")[le barreau magnétique et insérer les électrodes du pH-mètre dans l'échantillon.]
 + #step(verb: "Mettre en marche")[l'agitateur magnétique et mesurer le pH initial de l'échantillon.]
 + #step(verb: "Déterminer")[l'alcalinité composite : si le pH initial de l'échantillon est inférieur à *8,3*, noter l'alcalinité composite $A_p = 0 "mmol/L"$ et passer directement à l'étape suivante (titrage de l'alcalinité totale).]
 + #step(verb: "Sélectionner")[la concentration de l'acide à utiliser pour le titrage : utiliser la solution (3) d'acide chlorhydrique ~0,1 mol/L si l'alcalinité de l'échantillon est comprise entre *4 mmol/L et 20 mmol/L* ; utiliser la solution (4) d'acide chlorhydrique ~0,02 mol/L si l'alcalinité est comprise entre *0,4 mmol/L et 4 mmol/L*.]
 + #step(verb: "Titrer")[l'échantillon avec la solution d'acide chlorhydrique sélectionnée jusqu'à l'obtention d'un pH de *8,3 ± 0,05*.]
-+ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé pour atteindre ce point de virage, noté $V_s$ en millilitres.]
++ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé pour atteindre ce point de virage, noté $V_5$ en millilitres.]
 + #step(verb: "Conserver")[le mélange dans le vase de titrage pour réaliser immédiatement la détermination de l'alcalinité totale.]
 
 == Détermination de l'Alcalinité Totale ($A_T$ à pH 4,5)
 + #step(verb: "Continuer")[le titrage sous agitation modérée sur la solution issue de l'étape précédente en utilisant la même solution d'acide chlorhydrique.]
 + #step(verb: "Ajouter")[l'acide goutte à goutte à l'approche du pH 4,5, en attendant au moins *30 secondes* après chaque ajout pour permettre à l'électrode d'atteindre son équilibre de mesure.]
 + #step(verb: "Arrêter")[le titrage lorsque le pH-mètre indique un pH stable de *4,5 ± 0,05*.]
-+ #step(verb: "Noter")[le volume cumulé total d'acide chlorhydrique consommé depuis le début du titrage (c'est-à-dire le volume pour atteindre pH 8,3 plus le volume pour atteindre pH 4,5), noté $V_e$ en millilitres.]
++ #step(verb: "Noter")[le volume cumulé total d'acide chlorhydrique consommé depuis le début du titrage (c'est-à-dire le volume pour atteindre pH 8,3 plus le volume pour atteindre pH 4,5), noté $V_6$ en millilitres.]
 
 
 // ════════════════════════════════════════════════════════════
@@ -369,6 +369,21 @@ Avec :
 - $V_3$ : volume de solution d'acide chlorhydrique (3) consommé pour le blanc [mL] ;
 - $"53,00"$ : masse équivalente du carbonate de sodium (soit $105","99 / 2$) [g/eq].
 
+=== Concentration Réelle de l'Acide Chlorhydrique ~0,02 mol/L
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ c("HCl", 2) = "0,20" times c("HCl", 1) $
+  ]
+]
+
+Avec :
+- $c("HCl", 1)$ : concentration réelle de la solution d'acide chlorhydrique (3) [mol/L] ;
+- $c("HCl", 2)$ : concentration réelle de la solution d'acide chlorhydrique (4) [mol/L].
+
 === Alcalinité Composite ($A_p$)
 
 #align(center)[
@@ -376,7 +391,7 @@ Avec :
     stroke: 0.5pt,
     inset: (x: 20pt, y: 14pt),
   )[
-    $ A_p = (c("HCl") times V_s times 1000) / V_4 $
+    $ A_p = (c("HCl") times V_5 times 1000) / V_4 $
   ]
 ]
 
@@ -387,7 +402,7 @@ Avec :
     stroke: 0.5pt,
     inset: (x: 20pt, y: 14pt),
   )[
-    $ A_T = (c("HCl") times V_e times 1000) / V_4 $
+    $ A_T = (c("HCl") times V_6 times 1000) / V_4 $
   ]
 ]
 
@@ -404,8 +419,8 @@ Avec :
   [$A_p$], [Alcalinité composite (phénolphtaléine) de l'échantillon d'eau], [mmol/L d'ions $H^+$],
   [$A_T$], [Alcalinité totale de l'échantillon d'eau], [mmol/L d'ions $H^+$],
   [$c("HCl")$], [Concentration réelle de la solution d'acide chlorhydrique utilisée (3) ou (4)], [mol/L],
-  [$V_s$], [Volume de solution d'acide chlorhydrique consommé pour atteindre le pH de 8,3], [mL],
-  [$V_e$], [Volume total de solution d'acide chlorhydrique consommé pour atteindre le pH de 4,5], [mL],
+  [$V_5$], [Volume de solution d'acide chlorhydrique consommé pour atteindre le pH de 8,3], [mL],
+  [$V_6$], [Volume total de solution d'acide chlorhydrique consommé pour atteindre le pH de 4,5], [mL],
   [$V_4$], [Volume de la prise d'essai d'échantillon d'eau (normalement 100,0 mL)], [mL],
 )
 
@@ -449,33 +464,6 @@ L'alcalinité de l'eau peut également être exprimée dans d'autres unités. Le
   [Degré américain (US)],
   [2,90],
   [2,90 °US],
-)
-
-== Critères de Contrôle Qualité (QC) et Actions Correctives
-
-#table(
-  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
-  stroke: 0.5pt,
-  fill: none,
-  inset: (x: 8pt, y: 6pt),
-  align: (left, center, center, left),
-
-  [*Paramètre contrôlé*], [*Type de critère*], [*Limite d'acceptation*], [*Action corrective*],
-
-  [Écart sur duplicatas de titrage de l'acide $|V_2 - V'_2|$],
-  [Répétabilité étalonnage],
-  [$<= 0,10 "mL"$],
-  [Répeter les titrages d'étalonnage. Vérifier la burette et rincer l'électrode.],
-
-  [Volume de blanc pour l'étalonnage $V_3$],
-  [Contamination eau distillée],
-  [$<= 0,10 "mL"$],
-  [Remplacer l'eau distillée, vérifier sa conductivité et nettoyer la verrerie.],
-
-  [Répétabilité des duplicatas de l'échantillon $|A_(T, 1) - A_(T, 2)|$],
-  [Précision de l'analyse],
-  [$<= 0,05 "mmol/L"$ (pour $A_T < 1 "mmol/L"$) \ ou $<= 5 %$ de la moyenne (pour $A_T >= 1 "mmol/L"$)],
-  [Répéter le titrage en double. Calibrer à nouveau le pH-mètre. Remplacer l'échantillon.],
 )
 
 // ════════════════════════════════════════════════════════════

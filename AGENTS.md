@@ -128,3 +128,35 @@ Lorsqu'un agent doit générer la fiche de manipulation pour le permanganate de 
 >
 > Compilation finale à valider avec la commande :
 > `typst compile --root ../../ protocole/determination_indice_permanganate.typst`
+
+---
+
+## 5. Compilation des Flowcharts (Mermaid vers PDF A4 Unique)
+
+Pour garantir qu'un flowchart rédigé en Mermaid s'intègre parfaitement sur une **page unique au format A4** (sans coupure ni pagination aberrante), respectez scrupuleusement la procédure suivante :
+
+1. **Extraction du code Mermaid** : Extraire le bloc de code Mermaid depuis le fichier Markdown dans un fichier temporaire `.mmd` :
+   ```bash
+   sed -n '/^```mermaid/,/^```/p' protocole/flowchart_alcalinite.md | grep -v '```' > temp.mmd
+   ```
+
+2. **Rendu en image haute résolution (PNG)** : Compiler le fichier `.mmd` en un fichier image PNG en utilisant un facteur d'échelle de 3 (`-s 3`) pour garantir la netteté du texte (évitez le format SVG dont le rendu des objets HTML foreignObject peut poser problème lors de l'intégration dans Typst) :
+   ```bash
+   npx -y @mermaid-js/mermaid-cli -i temp.mmd -o temp.png -s 3
+   ```
+
+3. **Création du conteneur Typst temporaire** : Générer un fichier `.typst` configurant le format A4 et insérant l'image avec un ajustement automatique (`fit: "contain"`) :
+   ```bash
+   echo '#set page(paper: "a4", margin: 0.5cm); #align(center + horizon)[#image("temp.png", width: 100%, height: 100%, fit: "contain")]' > temp.typst
+   ```
+
+4. **Compilation finale en PDF** : Compiler le fichier `.typst` pour obtenir le PDF du flowchart sur une page A4 unique :
+   ```bash
+   typst compile temp.typst protocole/flowchart.pdf
+   ```
+
+5. **Nettoyage des fichiers temporaires** :
+   ```bash
+   rm temp.mmd temp.png temp.typst
+   ```
+

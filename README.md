@@ -57,6 +57,29 @@ Pour compiler localement le protocole au format PDF :
 
 ---
 
+## 📊 Compilation des Flowcharts (Mermaid vers PDF A4)
+
+Les flowcharts sont rédigés en Markdown contenant du code Mermaid (ex: `flowchart.md`). Pour les compiler en un document PDF sur une **page unique A4**, utilisez le script d'extraction et de compilation Typst suivant :
+
+```bash
+# 1. Extraire le bloc Mermaid du Markdown
+sed -n '/^```mermaid/,/^```/p' protocole/flowchart_methode.md | grep -v '```' > temp.mmd
+
+# 2. Générer le PNG haute résolution (échelle 3 pour une netteté maximale)
+npx -y @mermaid-js/mermaid-cli -i temp.mmd -o temp.png -s 3
+
+# 3. Créer un conteneur Typst au format A4
+echo '#set page(paper: "a4", margin: 0.5cm); #align(center + horizon)[#image("temp.png", width: 100%, height: 100%, fit: "contain")]' > temp.typst
+
+# 4. Compiler le PDF final
+typst compile temp.typst protocole/flowchart.pdf
+
+# 5. Nettoyer les fichiers temporaires
+rm temp.mmd temp.png temp.typst
+```
+
+---
+
 ## 📅 Suivi de Stage & Journal de Bord
 
 Toutes les tâches hebdomadaires, les manipulations effectuées, et les jalons franchis sont documentés dans le [Journal de Bord](file:///home/abdssamie/Internship-PFA/02_Administratif_et_Suivi/journal_de_bord.md).

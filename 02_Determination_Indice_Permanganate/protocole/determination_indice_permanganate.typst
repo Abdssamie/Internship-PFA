@@ -253,32 +253,32 @@
 
   [*Réactif*], [*Concentration*], [*Préparation / Pureté*], [*Conservation*],
 
-  [Permanganate de potassium (solution mère)],
+  [Permanganate de potassium],
   [~0,02 mol/L],
   [Dissoudre environ 3,2 g de $"KMnO"_4$ dans l'eau, compléter à 1 000 mL. Chauffer à 90-95 °C pendant 2 h, reposer 2 jours, puis décanter ou filtrer.],
   [Flacon en verre brun, à l'obscurité. Stable plusieurs mois.],
 
-  [Permanganate de potassium (solution titrée)],
+  [Permanganate de potassium],
   [~0,002 mol/L],
-  [Diluer 100 mL de solution mère (~0,02 mol/L) à 1 000 mL avec de l'eau dans une fiole jaugée et compléter au volume.],
+  [Diluer 100 mL de la solution à ~0,02 mol/L à 1 000 mL avec de l'eau dans une fiole jaugée et compléter au volume.],
   [Flacon en verre brun, à l'obscurité. Préparer fraîchement.],
 
-  [Oxalate de sodium (solution mère)],
+  [Oxalate de sodium],
   [0,05 mol/L],
   [Sécher le sel à 120 °C pendant 2 h. Dissoudre 6,700 g dans l'eau, compléter à 1 000 mL dans une fiole jaugée.],
   [Flacon en verre. Stable plusieurs mois.],
 
-  [Oxalate de sodium (solution étalon)],
+  [Oxalate de sodium],
   [0,005 mol/L],
-  [Introduire à l'aide d'une pipette 100 mL de solution mère (0,05 mol/L) dans une fiole de 1 000 mL, compléter au volume.],
+  [Introduire à l'aide d'une pipette 100 mL de la solution à 0,05 mol/L dans une fiole de 1 000 mL, compléter au volume.],
   [Flacon en verre. Stable 2 semaines à l'obscurité.],
 
-  [Acide sulfurique (de conservation)],
+  [Acide sulfurique],
   [7,5 mol/L],
   [Ajouter lentement 420 mL de $"H"_2"SO"_4$ concentré à 500 mL d'eau, laisser refroidir et compléter à 1 000 mL.],
   [Flacon en verre ou PE, stable indéfiniment.],
 
-  [Acide sulfurique (d'analyse)],
+  [Acide sulfurique],
   [2 mol/L],
   [Ajouter lentement 110 mL de $"H"_2"SO"_4$ concentré à 500 mL d'eau. Ajouter $"KMnO"_4$ (~0,002 mol/L) goutte à goutte jusqu'à coloration rose persistante, compléter à 1 000 mL.],
   [Flacon en verre ou PE, stable indéfiniment.],

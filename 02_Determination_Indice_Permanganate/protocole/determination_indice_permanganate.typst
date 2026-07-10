@@ -303,32 +303,36 @@ La méthode repose sur l'oxydation à chaud en milieu acide des matières organi
 
 == Préparation et Oxydation à Chaud
 
-+ #step("Prélever", [*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A.])
++ #step("Prélever", [*25,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A.])
 + #step("Transférer", [la prise d'essai dans un Erlenmeyer propre.])
 + #step("Ajouter", [*5 mL* de la solution d'acide sulfurique à ~4 mol/L.])
 + #step("Placer", [l'Erlenmeyer dans le bain-marie à *100 °C* pendant *10 minutes*.])
-+ #step("Ajouter", [*10,00 mL* de la solution de permanganate de potassium à *0,002 mol/L*.])
++ #step("Ajouter", [*5,00 mL* de la solution de permanganate de potassium à *0,002 mol/L*.])
 + #step("Chauffer", [le mélange au bain-marie à *100 °C* pendant exactement *10 minutes*.])
 
 == Titrage de l'Excès (Retour)
 
-+ #step("Ajouter", [*10,00 mL* de la solution d'oxalate de sodium à *0,005 mol/L* dans le mélange chaud.])
++ #step("Ajouter", [*5,00 mL* de la solution d'oxalate de sodium à *0,005 mol/L* dans le mélange chaud.])
 + #step("Agiter", [la solution jusqu'à sa décoloration complète.])
 + #step("Titrer", [la solution chaude à une température supérieure à *60 °C* avec la solution de permanganate de potassium à *0,002 mol/L* jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
 + #step("Noter", [le volume de solution de permanganate de potassium consommé pour le titrage, désigné par $V_1$ en millilitres.])
 
 == Essai à Blanc
 
-+ #step("Prélever", [*100,0 mL* d'eau distillée de qualité analytique à l'aide d'une pipette jaugée de classe A.])
++ #step("Prélever", [*25,0 mL* d'eau distillée de qualité analytique à l'aide d'une pipette jaugée de classe A.])
 + #step("Transférer", [l'eau distillée dans un Erlenmeyer propre.])
 + #step("Ajouter", [*5 mL* de la solution d'acide sulfurique à ~4 mol/L.])
 + #step("Placer", [l'Erlenmeyer dans le bain-marie à *100 °C* pendant *10 minutes*.])
-+ #step("Ajouter", [*10,00 mL* de la solution de permanganate de potassium à *0,002 mol/L*.])
++ #step("Ajouter", [*5,00 mL* de la solution de permanganate de potassium à *0,002 mol/L*.])
 + #step("Chauffer", [le mélange au bain-marie à *100 °C* pendant exactement *10 minutes*.])
-+ #step("Ajouter", [*10,00 mL* de la solution d'oxalate de sodium à *0,005 mol/L* dans le mélange chaud.])
++ #step("Ajouter", [*5,00 mL* de la solution d'oxalate de sodium à *0,005 mol/L* dans le mélange chaud.])
 + #step("Agiter", [la solution jusqu'à sa décoloration complète.])
 + #step("Titrer", [la solution chaude à une température supérieure à *60 °C* avec la solution de permanganate de potassium à *0,002 mol/L* jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
 + #step("Noter", [le volume de solution de permanganate de potassium consommé pour le titrage du blanc, désigné par $V_0$ en millilitres.])
++ #step("Ajouter", [*5,00 mL* de solution étalon d'oxalate de sodium à *0,005 mol/L* à cette même solution après titrage du blanc.])
++ #step("Réchauffer", [le mélange à environ *80 °C* si nécessaire.])
++ #step("Titrer", [à chaud avec la solution de permanganate de potassium à *0,002 mol/L* jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
++ #step("Noter", [le volume de solution de permanganate de potassium consommé pour l'étalonnage, désigné par $V_2$ en millilitres.])
 
 // ════════════════════════════════════════════════════════════
 //  5. EXPRESSION DES RÉSULTATS
@@ -368,18 +372,18 @@ L'indice de permanganate $I_"PM"$, exprimé en milligrammes d'oxygène par litre
 Le facteur de conversion $f$ est calculé selon la formule suivante :
 
 #align(center)[
-  $ f = frac(V_4 times c("Na"_2"C"_2"O"_4) times M_0, V_s) $
+  $ f = frac(V_4 times c("Na"_2"C"_2"O"_4) times M_0, V_5) $
 ]
 
 Avec :
 - $V_4 = 5 "mL"$ : volume de la solution d'oxalate de sodium ajouté ;
 - $c("Na"_2"C"_2"O"_4) = 5 "mmol/L"$ : concentration de la solution d'oxalate de sodium ;
 - $M_0 = 16 "mg/mmol"$ : masse molaire d'oxygène par millimole (équivalant à $1/2 "O"$) ;
-- $V_s = 100 "mL"$ : volume de l'échantillon d'eau (prise d'essai).
+- $V_5 = 25 "mL"$ : volume de l'échantillon d'eau (prise d'essai).
 
 Dans les conditions opératoires spécifiées, la valeur théorique de $f$ est :
 #align(center)[
-  $ f = frac(5 times 5 times 16, 100) = 4 $
+  $ f = frac(5 times 5 times 16, 25) = 16 $
 ]
 
 == Critères d'Acceptation QC
@@ -393,17 +397,17 @@ Dans les conditions opératoires spécifiées, la valeur théorique de $f$ est :
 
   [Écart sur duplicatas de titrage $|V_(1,1) - V_(1,2)|$],
   [Répétabilité],
-  [$\le 0,10 "mL"$],
+  [$<= 0,10 "mL"$],
   [Répeter le titrage en duplicata et vérifier le fonctionnement de la burette.],
 
   [Volume d'essai à blanc $V_0$],
   [Contamination / Pureté],
-  [$\le 0,20 "mL"$],
+  [$<= 0,10 "mL"$],
   [Vérifier la qualité de l'eau distillée et procéder à un nettoyage acide de la verrerie.],
 
   [Répétabilité de l'indice $I_"PM"$],
   [Précision globale],
-  [$\le 0,2 "mg/L"$ (pour $I_"PM" < 2 "mg/L"$) \ ou $\le 10 %$ de la moyenne (pour $I_"PM" \ge 2 "mg/L"$)],
+  [$<= 0,2 "mg/L"$ (pour $I_"PM" < 2 "mg/L"$) \ ou $<= 10 %$ de la moyenne (pour $I_"PM" >= 2 "mg/L"$)],
   [Répéter l'analyse complète (oxydation et titrage).],
 )
 

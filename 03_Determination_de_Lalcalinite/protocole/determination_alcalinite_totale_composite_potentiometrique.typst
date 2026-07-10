@@ -1,0 +1,493 @@
+// ============================================================
+//  PROTOCOLE D'ANALYSE — DÉTERMINATION DE L'ALCALINITÉ
+//  Méthode Potentiométrique
+//  Référence normative : ISO 9963-1:1994
+// ============================================================
+
+// ── Global page settings ────────────────────────────────────
+#set page(
+  paper: "a4",
+  margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
+  numbering: "1 / 1",
+  number-align: right,
+  header: [
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[Détermination de l'Alcalinité (ISO 9963-1:1994)],
+      align(right)[Réf. : *PRO-CHM-003* | Rév. : *1.0*],
+    )
+    #line(length: 100%, stroke: 0.5pt)
+  ],
+  footer: [
+    #line(length: 100%, stroke: 0.5pt)
+    #set text(size: 8pt)
+    #align(center)[#context [Page #counter(page).display() / #counter(page).final().first()]]
+  ],
+)
+
+// ── Typography ───────────────────────────────────────────────
+#set text(font: "STIX Two Text", size: 10.5pt, lang: "fr")
+#show math.equation: set text(font: "STIX Two Math")
+#show raw: set text(font: "Source Code Pro", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set heading(numbering: "1.1.1")
+
+// ── Reusable components ─────────────────────────────────────
+
+// Section heading: full-width rule above, bold black text
+#show heading.where(level: 1): it => {
+  v(1.2em)
+  line(length: 100%, stroke: 1pt)
+  block(above: 0.4em, below: 0.6em)[
+    #set text(size: 13pt, weight: "bold")
+    #it
+  ]
+}
+
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  block(below: 0.4em)[
+    #set text(size: 11pt, weight: "bold")
+    #it
+  ]
+}
+
+// Safety callout — left thick rule, black border, no fill
+#let safety-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: 0.5pt),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚠ #title] \
+    #content
+  ]
+}
+
+// Warning callout — same structure, dashed border
+#let warn-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: (dash: "dashed", thickness: 0.5pt)),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚑ #title] \
+    #content
+  ]
+}
+
+// Informational note — indented, thin border
+#let note-box(content) = {
+  block(
+    width: 100%,
+    stroke: (left: 1.5pt, rest: none),
+    inset: (left: 12pt, right: 0pt, y: 4pt),
+  )[
+    #text(weight: "bold")[Note :] #content
+  ]
+}
+
+// Numbered procedure step — bold action verb
+#let step(verb: "", rest) = {
+  block(below: 0.5em)[
+    *#verb* #rest
+  ]
+}
+
+// ════════════════════════════════════════════════════════════
+//  ① DOCUMENT HEADER — Identification & Traceabilité
+// ════════════════════════════════════════════════════════════
+
+// ── Title block ──────────────────────────────────────────────
+#line(length: 100%, stroke: 1.5pt)
+#v(0.4em)
+#align(center)[
+  #text(size: 16pt, weight: "bold")[Détermination de l'Alcalinité Totale et Composite] \
+  #v(4pt)
+  #text(size: 11pt)[Méthode Potentiométrique — Norme ISO 9963-1:1994(F)]
+]
+#v(0.4em)
+#line(length: 100%, stroke: 1.5pt)
+
+#v(0.8em)
+
+// ── Identification table ─────────────────────────────────────
+#show table.cell: set text(hyphenate: false)
+#table(
+  columns: (auto, 1fr, auto, 1fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  // Row 1
+  [*Référence*],
+  [PRO-CHM-003],
+  [*Révision*],
+  [1.0],
+
+  // Row 2
+  [*Date d'application*],
+  [10/07/2026],
+  [*Statut*],
+  [En vigueur],
+
+  // Row 3
+  [*Rédigé par*],
+  table.cell(colspan: 3)[Abdessamie El Moubarki],
+
+  // Row 4
+  [*Domaine d'application*],
+  table.cell(colspan: 3)[
+    Eaux de surface, eaux souterraines, eaux potables et eaux brutes. \
+    Plage de mesure : 0,4 mmol/L à 20 mmol/L (les échantillons plus concentrés doivent être dilués).
+  ],
+)
+
+#v(1em)
+
+// ════════════════════════════════════════════════════════════
+//  1. SÉCURITÉ ET PRÉVENTION DES RISQUES
+// ════════════════════════════════════════════════════════════
+
+= Sécurité et Prévention des Risques
+
+// GHS pictogram helper — renders one SVG icon at 30pt
+#let ghs(code) = image(
+  "../../GHS_Pictogrammes/" + code + ".svg",
+  width: 30pt,
+)
+
+// Inline row of icons with a small gap
+#let icons(..codes) = {
+  for c in codes.pos() { box(ghs(c)); h(3pt) }
+}
+
+#table(
+  columns: (1.8fr, auto, 2fr, 2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 10pt),
+  align: (left, center, left, left),
+
+  [*Produit chimique*], [*Pictogramme(s) GHS*], [*Mentions de danger*], [*Conseils de prudence*],
+
+  // Carbonate de sodium
+  [Carbonate de sodium (2) \ $"Na"_2"CO"_3$ \ (~0,025 mol/L)],
+  [#icons("GHS07")],
+  [Provoque une sévére irritation des yeux.],
+  [Porter des gants de protection et un équipement de protection des yeux. Se laver les mains soigneusement après manipulation. En cas de contact oculaire, rincer avec précaution à l'eau pendant plusieurs minutes.],
+
+  // Acide chlorhydrique
+  [Acide chlorhydrique (3) et (4) \ $"HCl"$ \ (~0,10 mol/L et ~0,02 mol/L)],
+  [#icons("GHS05")],
+  [Peut être corrosif pour les métaux. Provoque de graves brûlures de la peau et de graves lésions des yeux.],
+  [Porter des gants de protection, des vêtements de protection et un équipement de protection des yeux. Éviter de respirer les vapeurs ou les brouillards. En cas de contact avec la peau, laver immédiatement et abondamment.],
+
+  // Solutions tampons pH
+  [Solutions tampons d'étalonnage \ (pH 4, 7, 9)],
+  [—],
+  [Non classé comme dangereux selon le règlement GHS.],
+  [Porter des lunettes de protection pour éviter toute projection oculaire lors de l'étalonnage.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  2. MATÉRIEL ET RÉACTIFS
+// ════════════════════════════════════════════════════════════
+
+= Matériel et Réactifs
+
+== Appareillage
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, center, center),
+
+  [*Équipement*], [*Capacité / Portée*], [*Classe / Tolérance*], [*Norme de référence*],
+
+  [pH-mètre avec électrode combinée],
+  [pH 0–14],
+  [Résolution : ± 0,01 pH \ Précision : ± 0,05 pH],
+  [CEI 746-2],
+
+  [Burette de précision],
+  [10,0 mL],
+  [Classe A / ± 0,02 mL \ (graduation de 0,02 mL)],
+  [ISO 385],
+
+  [Pipette jaugée],
+  [100,0 mL],
+  [Classe A / ± 0,08 mL],
+  [ISO 648],
+
+  [Pipette jaugée],
+  [25,0 mL],
+  [Classe A / ± 0,03 mL],
+  [ISO 648],
+
+  [Fiole jaugée],
+  [1 000 mL],
+  [Classe A / ± 0,40 mL],
+  [ISO 1042],
+
+  [Fiole jaugée],
+  [500 mL],
+  [Classe A / ± 0,20 mL],
+  [ISO 1042],
+
+  [Agitateur magnétique et barreau],
+  [—],
+  [Revêtement plastique inerté],
+  [—],
+
+  [Vase de titrage],
+  [~250 mL],
+  [Col étroit (contact air minimal)],
+  [—],
+)
+
+== Réactifs
+
+#table(
+  columns: (1.8fr, 1.2fr, 2.2fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, left, left),
+
+  [*Réactif*], [*Concentration*], [*Préparation / Pureté*], [*Conservation*],
+
+  [Eau purifiée (1)],
+  [—],
+  [Qualité 2 de l'ISO 3696. Conductivité inférieure à *0,1 mS/m* et exempte de concentrations interférentes en acides et bases.],
+  [À utiliser fraîchement préparée.],
+
+  [Carbonate de sodium, solution étalon (2)],
+  [~0,025 mol/L \ ($c("Na"_2"CO"_3)$)],
+  [Sécher *3 g à 5 g* de carbonate de sodium anhydre ($"Na"_2"CO"_3$) à *250 °C ± 10 °C* pendant *4 heures*. Refroidir en dessiccateur. Dissoudre 2,65 g ± 0,20 g ($m$, pesée à *0,001 g* près) dans de l'eau (1) et diluer à *1 000 mL* dans une fiole jaugée.],
+  [Réfrigérateur entre *4 °C et 8 °C*. Stable pendant 1 mois maximum.],
+
+  [Acide chlorhydrique, solution (3)],
+  [~0,10 mol/L \ ($c("HCl")$)],
+  [Diluer *8,6 mL ± 0,1 mL* d'acide chlorhydrique concentré (densité 1,16 g/mL) à *1 000 mL* avec de l'eau (1) dans une fiole jaugée. Étalonner hebdomadairement.],
+  [Flacon en verre ou en PE, stable plusieurs mois.],
+
+  [Acide chlorhydrique, solution (4)],
+  [~0,02 mol/L \ ($c("HCl")$)],
+  [Pipeter *100 mL ± 1 mL* de solution (3) dans une fiole jaugée de *500 mL*, diluer au volume avec de l'eau (1) et bien mélanger.],
+  [À préparer extemporanément (juste avant l'analyse).],
+
+  [Solutions tampons pH],
+  [pH 4,00, 7,00, 9,00],
+  [Solutions commerciales prêtes à l'emploi conformes aux spécifications du fabricant.],
+  [Se conformer aux consignes du fabricant.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  3. PRINCIPE DE LA MÉTHODE
+// ════════════════════════════════════════════════════════════
+
+= Principe de la Méthode
+
+La détermination de l'alcalinité repose sur le titrage potentiométrique des bases contenues dans l'échantillon d'eau par une solution d'acide chlorhydrique étalonnée. Les points d'équivalence correspondant aux réactions chimiques majeures sont détectés à des valeurs de pH spécifiques :
+
+1.  *Alcalinité composite (phénolphtaléine) à pH 8,3 ($A_p$)* : Représente la neutralisation complète des hydroxydes et la conversion de la moitié du carbonate en hydrogénocarbonate :
+    $ "OH"^- + "H"^+ -> "H"_2"O" $
+    $ "CO"_3^(2-) + "H"^+ -> "HCO"_3^- $
+
+2.  *Alcalinité totale à pH 4,5 ($A_T$)* : Représente la neutralisation de tous les ions hydrogénocarbonate de l'échantillon (y compris ceux issus de l'étape 1) :
+    $ "HCO"_3^- + "H"^+ -> "CO"_2 arrow.r + "H"_2"O" $
+
+// ════════════════════════════════════════════════════════════
+//  4. MODE OPÉRATOIRE
+// ════════════════════════════════════════════════════════════
+
+= Mode Opératoire
+
+#warn-box(title: "Vérifications préalables et agitation", [
+  - Étalonner le pH-mètre en 3 points à l'aide des solutions tampons pH 4,00, 7,00 et 9,00 juste avant le début de la série de mesures.
+  - Régler l'agitation magnétique à une vitesse modérée de sorte qu'un tourbillon soit à peine perceptible, afin d'éviter l'absorption ou le dégazage excessif de dioxyde de carbone ($"CO"_2$) atmosphérique pendant le titrage.
+])
+
+== Étalonnage de la Solution d'Acide Chlorhydrique ~0,10 mol/L
++ #step(verb: "Pipeter")[*25,0 mL* de la solution étalon de carbonate de sodium (2) à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Transférer")[la prise d'essai dans le récipient de titrage.]
++ #step(verb: "Ajouter")[*75 mL ± 5 mL* d'eau purifiée (1).]
++ #step(verb: "Placer")[le récipient de titrage sur l'agitateur magnétique et introduire le barreau magnétique.]
++ #step(verb: "Insérer")[les électrodes du pH-mètre préalablement rincées à l'eau purifiée.]
++ #step(verb: "Mettre en marche")[l'agitateur magnétique.]
++ #step(verb: "Titrer")[la solution sous agitation modérée avec la solution d'acide chlorhydrique ~0,10 mol/L (3) jusqu'à ce que le pH-mètre affiche un pH de *4,5 ± 0,05*.]
++ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé, noté $V_2$ en millilitres.]
++ #step(verb: "Titrer le blanc")[en répétant exactement les étapes 1 à 8 avec *100 mL ± 5 mL* d'eau purifiée (1) au lieu de la solution étalon de carbonate de sodium. Noter le volume consommé, noté $V_3$ en millilitres.]
++ #step(verb: "Calculer")[la concentration réelle de la solution d'acide chlorhydrique (3), notée $c("HCl", 1)$ en moles par litre, selon la formule de calcul.]
+
+== Détermination de l'Alcalinité Composite ($A_p$ à pH 8,3)
++ #step(verb: "Pipeter")[*100,0 mL* de l'échantillon d'eau à l'aide d'une pipette jaugée de classe A.]
++ #step(verb: "Transférer")[la prise d'essai dans le vase de titrage.]
++ #step(verb: "Introduire")[le barreau magnétique et insérer les électrodes du pH-mètre dans l'échantillon.]
++ #step(verb: "Mettre en marche")[l'agitateur magnétique et mesurer le pH initial de l'échantillon.]
++ #step(verb: "Déterminer")[l'alcalinité composite : si le pH initial de l'échantillon est inférieur à *8,3*, noter l'alcalinité composite $A_p = 0 "mmol/L"$ et passer directement à l'étape suivante (titrage de l'alcalinité totale).]
++ #step(verb: "Sélectionner")[la concentration de l'acide à utiliser pour le titrage : utiliser la solution (3) d'acide chlorhydrique ~0,1 mol/L si l'alcalinité de l'échantillon est comprise entre *4 mmol/L et 20 mmol/L* ; utiliser la solution (4) d'acide chlorhydrique ~0,02 mol/L si l'alcalinité est comprise entre *0,4 mmol/L et 4 mmol/L*.]
++ #step(verb: "Titrer")[l'échantillon avec la solution d'acide chlorhydrique sélectionnée jusqu'à l'obtention d'un pH de *8,3 ± 0,05*.]
++ #step(verb: "Noter")[le volume exact de solution d'acide chlorhydrique consommé pour atteindre ce point de virage, noté $V_s$ en millilitres.]
++ #step(verb: "Conserver")[le mélange dans le vase de titrage pour réaliser immédiatement la détermination de l'alcalinité totale.]
+
+== Détermination de l'Alcalinité Totale ($A_T$ à pH 4,5)
++ #step(verb: "Continuer")[le titrage sous agitation modérée sur la solution issue de l'étape précédente en utilisant la même solution d'acide chlorhydrique.]
++ #step(verb: "Ajouter")[l'acide goutte à goutte à l'approche du pH 4,5, en attendant au moins *30 secondes* après chaque ajout pour permettre à l'électrode d'atteindre son équilibre de mesure.]
++ #step(verb: "Arrêter")[le titrage lorsque le pH-mètre indique un pH stable de *4,5 ± 0,05*.]
++ #step(verb: "Noter")[le volume cumulé total d'acide chlorhydrique consommé depuis le début du titrage (c'est-à-dire le volume pour atteindre pH 8,3 plus le volume pour atteindre pH 4,5), noté $V_e$ en millilitres.]
+
+
+// ════════════════════════════════════════════════════════════
+//  5. EXPRESSION DES RÉSULTATS
+// ════════════════════════════════════════════════════════════
+
+= Expression des Résultats
+
+== Calculs
+
+=== Concentration Réelle de l'Acide Chlorhydrique ~0,10 mol/L
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ c("HCl", 1) = (m times V_1) / ("53,00" times (V_2 - V_3)) $
+  ]
+]
+
+Avec :
+- $c("HCl", 1)$ : concentration réelle de la solution d'acide chlorhydrique (3) [mol/L] ;
+- $m$ : masse de carbonate de sodium anhydre ($"Na"_2"CO"_3$) pesée pour la solution étalon (2) [g] ;
+- $V_1$ : volume de solution étalon de carbonate de sodium (2) prélevé ($V_1 = 25 "mL"$) ;
+- $V_2$ : volume de solution d'acide chlorhydrique (3) consommé pour le titrage du carbonate [mL] ;
+- $V_3$ : volume de solution d'acide chlorhydrique (3) consommé pour le blanc [mL] ;
+- $"53,00"$ : masse équivalente du carbonate de sodium (soit $105","99 / 2$) [g/eq].
+
+=== Alcalinité Composite ($A_p$)
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ A_p = (c("HCl") times V_s times 1000) / V_4 $
+  ]
+]
+
+=== Alcalinité Totale ($A_T$)
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ A_T = (c("HCl") times V_e times 1000) / V_4 $
+  ]
+]
+
+#v(0.6em)
+
+#table(
+  columns: (auto, 1fr, auto),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  [*Symbole*], [*Définition*], [*Unité*],
+
+  [$A_p$], [Alcalinité composite (phénolphtaléine) de l'échantillon d'eau], [mmol/L d'ions $H^+$],
+  [$A_T$], [Alcalinité totale de l'échantillon d'eau], [mmol/L d'ions $H^+$],
+  [$c("HCl")$], [Concentration réelle de la solution d'acide chlorhydrique utilisée (3) ou (4)], [mol/L],
+  [$V_s$], [Volume de solution d'acide chlorhydrique consommé pour atteindre le pH de 8,3], [mL],
+  [$V_e$], [Volume total de solution d'acide chlorhydrique consommé pour atteindre le pH de 4,5], [mL],
+  [$V_4$], [Volume de la prise d'essai d'échantillon d'eau (normalement 100,0 mL)], [mL],
+)
+
+== Facteurs de Conversion des Unités d'Alcalinité
+
+L'alcalinité de l'eau peut également être exprimée dans d'autres unités. Les facteurs de conversion théoriques permettant de passer des millimoles par litre (mmol/L) d'ions $"H"^+$ à d'autres expressions courantes sont résumés dans le tableau ci-dessous :
+
+#table(
+  columns: (2.5fr, 1.5fr, 2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, left),
+
+  [*Unité de destination*], [*Facteur de multiplication*], [*Équivalence pour 1 mmol/L H⁺*],
+
+  [mmol/L de $"CaCO"_3$],
+  [0,50],
+  [0,50 mmol/L $"CaCO"_3$],
+
+  [mg/L de $"CaCO"_3$ (ppm)],
+  [50,0],
+  [50,0 mg/L $"CaCO"_3$],
+
+  [mg/L de $"HCO"_3^-$],
+  [61,0],
+  [61,0 mg/L $"HCO"_3^-$],
+
+  [Degré français (°f)],
+  [5,00],
+  [5,00 °f (soit 50 mg/L $"CaCO"_3$)],
+
+  [Degré allemand (°d)],
+  [2,80],
+  [2,80 °d (soit 28 mg/L $"CaO"$)],
+
+  [Degré anglais (Clark)],
+  [3,50],
+  [3,50 Clark (soit 1 grain $"CaCO"_3$ / gallon anglais)],
+
+  [Degré américain (US)],
+  [2,90],
+  [2,90 °US],
+)
+
+== Critères de Contrôle Qualité (QC) et Actions Correctives
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, center, left),
+
+  [*Paramètre contrôlé*], [*Type de critère*], [*Limite d'acceptation*], [*Action corrective*],
+
+  [Écart sur duplicatas de titrage de l'acide $|V_2 - V'_2|$],
+  [Répétabilité étalonnage],
+  [$<= 0,10 "mL"$],
+  [Répeter les titrages d'étalonnage. Vérifier la burette et rincer l'électrode.],
+
+  [Volume de blanc pour l'étalonnage $V_3$],
+  [Contamination eau distillée],
+  [$<= 0,10 "mL"$],
+  [Remplacer l'eau distillée, vérifier sa conductivité et nettoyer la verrerie.],
+
+  [Répétabilité des duplicatas de l'échantillon $|A_(T, 1) - A_(T, 2)|$],
+  [Précision de l'analyse],
+  [$<= 0,05 "mmol/L"$ (pour $A_T < 1 "mmol/L"$) \ ou $<= 5 %$ de la moyenne (pour $A_T >= 1 "mmol/L"$)],
+  [Répéter le titrage en double. Calibrer à nouveau le pH-mètre. Remplacer l'échantillon.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  6. RÉFÉRENCES NORMATIVES
+// ════════════════════════════════════════════════════════════
+
+= Références Normatives
+
+- *ISO 9963-1:1994* : Qualité de l'eau — Détermination de l'alcalinité — Partie 1: Détermination de l'alcalinité totale et composite.
+- *ISO 385* : Verrerie de laboratoire — Burettes.
+- *ISO 648* : Verrerie de laboratoire — Pipettes à un trait.
+- *ISO 1042* : Verrerie de laboratoire — Fioles jaugées.
+- *ISO 3696* : Eau pour laboratoire à usage analytique — Spécification et méthodes d'essai.
+- *CEI 746-2* : Expression des qualités de fonctionnement des analyseurs électrochimiques — Partie 2: Mesure du pH.
+- *ISO/CEI 17025* : Exigences générales concernant la compétence des laboratoires d'étalonnage et d'essais.

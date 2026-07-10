@@ -383,7 +383,7 @@ Avec :
 
 Dans les conditions opératoires spécifiées, la valeur théorique de $f$ est :
 #align(center)[
-  $ f = frac(5 times 5 times 16, 25) = 16 $
+  $ f = frac(5 times 5 times 16, 25) = 16 "mg/L" $
 ]
 
 == Critères d'Acceptation QC

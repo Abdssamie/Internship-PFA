@@ -378,7 +378,7 @@ Le facteur de conversion $f$ est calculé selon la formule suivante :
 Avec :
 - $V_4 = 5 "mL"$ : volume de la solution d'oxalate de sodium ajouté ;
 - $c("Na"_2"C"_2"O"_4) = 5 "mmol/L"$ : concentration de la solution d'oxalate de sodium ;
-- $M_0 = 16 "mg/mmol"$ : masse molaire d'oxygène par millimole (équivalant à $1/2 "O"$) ;
+- $M_0 = 16 "mg/mmol"$ : masse molaire d'oxygène atomique (équivalant à $1/2 "O"_2$) ;
 - $V_5 = 25 "mL"$ : volume de l'échantillon d'eau (prise d'essai).
 
 Dans les conditions opératoires spécifiées, la valeur théorique de $f$ est :

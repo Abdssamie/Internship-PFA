@@ -329,7 +329,7 @@ La méthode repose sur l'oxydation à chaud en milieu acide des matières organi
 
 + #step("Ajouter", [*5,00 mL* de la solution d'oxalate de sodium (4) dans le mélange chaud.])
 + #step("Agiter", [la solution jusqu'à sa décoloration complète.])
-+ #step("Titrer", [la solution chaude à une température comprise entre *70 °C* et *80 °C* avec la solution de permanganate de potassium (2) jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
++ #step("Titrer", [la solution chaude à une température d'environ *80 °C* avec la solution de permanganate de potassium (2) jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
 + #step("Noter", [le volume de solution de permanganate de potassium consommé pour le titrage, désigné par $V_1$ en millilitres.])
 
 == Essai à Blanc
@@ -342,10 +342,10 @@ La méthode repose sur l'oxydation à chaud en milieu acide des matières organi
 + #step("Chauffer", [le mélange au bain-marie à *100 °C* pendant exactement *10 minutes*.])
 + #step("Ajouter", [*5,00 mL* de la solution d'oxalate de sodium (4) dans le mélange chaud.])
 + #step("Agiter", [la solution jusqu'à sa décoloration complète.])
-+ #step("Titrer", [la solution chaude à une température comprise entre *70 °C* et *80 °C* avec la solution de permanganate de potassium (2) jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
++ #step("Titrer", [la solution chaude à une température d'environ *80 °C* avec la solution de permanganate de potassium (2) jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
 + #step("Noter", [le volume de solution de permanganate de potassium consommé pour le titrage du blanc, désigné par $V_0$ en millilitres.])
 + #step("Ajouter", [*5,00 mL* de la solution d'oxalate de sodium (4) à cette même solution après titrage du blanc.])
-+ #step("Titrer", [à chaud à une température comprise entre *70 °C* et *80 °C* avec la solution de permanganate de potassium (2) jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
++ #step("Titrer", [à chaud à une température d'environ *80 °C* avec la solution de permanganate de potassium (2) jusqu'à l'obtention d'une coloration rose pâle persistante pendant au moins *30 secondes*.])
 + #step("Noter", [le volume de solution de permanganate de potassium consommé pour l'étalonnage, désigné par $V_2$ en millilitres.])
 
 // ════════════════════════════════════════════════════════════

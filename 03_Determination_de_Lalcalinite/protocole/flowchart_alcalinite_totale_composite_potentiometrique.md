@@ -3,7 +3,7 @@
 Voici l'enchaînement des étapes opératoires et des critères de validation analytiques pour la méthode potentiométrique uniquement :
 
 ```mermaid
-graph TD
+graph LR
     %% Début de l'analyse
     Start(["Début de l'analyse"]) --> Prep["Préparer & Calibrer le pH-mètre<br>(solutions tampons pH 4, 7 et 9)"]
     Prep --> Dispatch{"Action à réaliser ?"}

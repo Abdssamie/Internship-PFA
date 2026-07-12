@@ -424,47 +424,6 @@ Avec :
   [$V_4$], [Volume de la prise d'essai d'échantillon d'eau (normalement 100,0 mL)], [mL],
 )
 
-== Facteurs de Conversion des Unités d'Alcalinité
-
-L'alcalinité de l'eau peut également être exprimée dans d'autres unités. Les facteurs de conversion théoriques permettant de passer des millimoles par litre (mmol/L) d'ions $"H"^+$ à d'autres expressions courantes sont résumés dans le tableau ci-dessous :
-
-#table(
-  columns: (2.5fr, 1.5fr, 2fr),
-  stroke: 0.5pt,
-  fill: none,
-  inset: (x: 8pt, y: 6pt),
-  align: (left, center, left),
-
-  [*Unité de destination*], [*Facteur de multiplication*], [*Équivalence pour 1 mmol/L H⁺*],
-
-  [mmol/L de $"CaCO"_3$],
-  [0,50],
-  [0,50 mmol/L $"CaCO"_3$],
-
-  [mg/L de $"CaCO"_3$ (ppm)],
-  [50,0],
-  [50,0 mg/L $"CaCO"_3$],
-
-  [mg/L de $"HCO"_3^-$],
-  [61,0],
-  [61,0 mg/L $"HCO"_3^-$],
-
-  [Degré français (°f)],
-  [5,00],
-  [5,00 °f (soit 50 mg/L $"CaCO"_3$)],
-
-  [Degré allemand (°d)],
-  [2,80],
-  [2,80 °d (soit 28 mg/L $"CaO"$)],
-
-  [Degré anglais (Clark)],
-  [3,50],
-  [3,50 Clark (soit 1 grain $"CaCO"_3$ / gallon anglais)],
-
-  [Degré américain (US)],
-  [2,90],
-  [2,90 °US],
-)
 
 // ════════════════════════════════════════════════════════════
 //  6. RÉFÉRENCES NORMATIVES

@@ -1,0 +1,471 @@
+// ============================================================
+//  PROTOCOLE D'ANALYSE — DOSAGE DES NITRITES
+//  Méthode par Spectrométrie d'Absorption Moléculaire
+//  Référence normative : ISO 6777:1984
+// ============================================================
+
+// ── Global page settings ────────────────────────────────────
+#set page(
+  paper: "a4",
+  margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
+  numbering: "1 / 1",
+  number-align: right,
+  header: [
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[Dosage des Nitrites dans l'Eau (ISO 6777:1984)],
+      align(right)[Réf. : *PRO-CHM-007* | Rév. : *1.0*],
+    )
+    #line(length: 100%, stroke: 0.5pt)
+  ],
+  footer: [
+    #line(length: 100%, stroke: 0.5pt)
+    #set text(size: 8pt)
+    #align(center)[#context [Page #counter(page).display() / #counter(page).final().first()]]
+  ],
+)
+
+// ── Typography ───────────────────────────────────────────────
+#set text(font: "STIX Two Text", size: 10.5pt, lang: "fr")
+#show math.equation: set text(font: "STIX Two Math")
+#show raw: set text(font: "Source Code Pro", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set heading(numbering: "1.1.1")
+
+// ── Reusable components ─────────────────────────────────────
+
+// Section heading: full-width rule above, bold black text
+#show heading.where(level: 1): it => {
+  v(1.2em)
+  line(length: 100%, stroke: 1pt)
+  block(above: 0.4em, below: 0.6em)[
+    #set text(size: 13pt, weight: "bold")
+    #it
+  ]
+}
+
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  block(below: 0.4em)[
+    #set text(size: 11pt, weight: "bold")
+    #it
+  ]
+}
+
+// Safety callout — left thick rule, black border, no fill
+#let safety-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: 0.5pt),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚠ #title] \
+    #content
+  ]
+}
+
+// Warning callout — same structure, dashed border
+#let warn-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: (dash: "dashed", thickness: 0.5pt)),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚑ #title] \
+    #content
+  ]
+}
+
+// Informational note — indented, thin border
+#let note-box(content) = {
+  block(
+    width: 100%,
+    stroke: (left: 1.5pt, rest: none),
+    inset: (left: 12pt, right: 0pt, y: 4pt),
+  )[
+    #text(weight: "bold")[Note :] #content
+  ]
+}
+
+// Numbered procedure step — bold action verb
+#let step(verb: "", rest) = {
+  block(below: 0.5em)[
+    *#verb* #rest
+  ]
+}
+
+// ════════════════════════════════════════════════════════════
+//  ① DOCUMENT HEADER — Identification & Traceabilité
+// ════════════════════════════════════════════════════════════
+
+// ── Title block ──────────────────────────────────────────────
+#line(length: 100%, stroke: 1.5pt)
+#v(0.4em)
+#align(center)[
+  #text(size: 16pt, weight: "bold")[Dosage des Nitrites dans l'Eau] \
+  #v(4pt)
+  #text(size: 11pt)[Méthode par Spectrométrie d'Absorption Moléculaire — Norme ISO 6777:1984(F)]
+]
+#v(0.4em)
+#line(length: 100%, stroke: 1.5pt)
+
+#v(0.8em)
+
+// ── Identification table ─────────────────────────────────────
+#show table.cell: set text(hyphenate: false)
+#table(
+  columns: (auto, 1fr, auto, 1fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  // Row 1
+  [*Référence*],
+  [PRO-CHM-007],
+  [*Révision*],
+  [1.0],
+
+  // Row 2
+  [*Date d'application*],
+  [12/07/2026],
+  [*Statut*],
+  [En vigueur],
+
+  // Row 3
+  [*Rédigé par*],
+  table.cell(colspan: 3)[Abdessamie El Moubarki],
+
+  // Row 4
+  [*Domaine d'application*],
+  table.cell(colspan: 3)[
+    Eaux potables, eaux brutes et eaux résiduaires. \
+    Plage de mesure : Jusqu'à *0,25 mg/L* d'azote nitrique ($rho_"N"$) en prise d'essai maximale de *40 mL*. Les échantillons plus concentrés doivent être dilués.
+  ],
+)
+
+#v(1em)
+
+// ════════════════════════════════════════════════════════════
+//  1. SÉCURITÉ ET PRÉVENTION DES RISQUES
+// ════════════════════════════════════════════════════════════
+
+= Sécurité et Prévention des Risques
+
+// GHS pictogram helper — renders one SVG icon at 30pt
+#let ghs(code) = image(
+  "../../GHS_Pictogrammes/" + code + ".svg",
+  width: 30pt,
+)
+
+// Inline row of icons with a small gap
+#let icons(..codes) = {
+  for c in codes.pos() { box(ghs(c)); h(3pt) }
+}
+
+#table(
+  columns: (1.8fr, auto, 2fr, 2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 10pt),
+  align: (left, center, left, left),
+
+  [*Produit chimique*], [*Pictogramme(s) GHS*], [*Mentions de danger*], [*Conseils de prudence*],
+
+  // Réactif coloré
+  [Réactif coloré (3) \ (Aminobenzène sulfonamide + N-(1-naphthyl)ethylenediamine + $"H"_3"PO"_4$)],
+  [#icons("GHS05", "GHS07")],
+  [Provoque des brûlures de la peau et des lésions oculaires graves. Peut irriter les voies respiratoires.],
+  [Porter des gants de protection, des vêtements de protection et un équipement de protection des yeux. Éviter de respirer les vapeurs. En cas de contact oculaire, rincer avec précaution à l'eau pendant plusieurs minutes et appeler immédiatement un médecin.],
+
+  // Nitrite de sodium
+  [Nitrite de sodium \ $"NaNO"_2$ \ (~100 mg/L N)],
+  [#icons("GHS03", "GHS07", "GHS09")],
+  [Peut aggraver un incendie (comburant). Toxique en cas d'ingestion. Très toxique pour les organismes aquatiques.],
+  [Tenir à l'écart de la chaleur et des matières combustibles. Éviter le rejet dans l'environnement. Se laver les mains soigneusement après manipulation.],
+
+  // Permanganate de potassium
+  [Permanganate de potassium \ $"KMnO"_4$ \ (~0,01 mol/L)],
+  [#icons("GHS03", "GHS05", "GHS08", "GHS09")],
+  [Peut aggraver un incendie (comburant). Provoque de graves brûlures de la peau. Susceptible de nuire à la fertilité ou au fœtus. Très toxique pour la vie aquatique.],
+  [Porter des gants et des lunettes de protection. Éviter tout contact pendant la grossesse. Éviter le rejet dans l'environnement.],
+
+  // Acide sulfurique
+  [Acide sulfurique \ $"H"_2"SO"_4$ \ (~2,5 mol/L)],
+  [#icons("GHS05")],
+  [Provoque de graves brûlures de la peau et des lésions oculaires graves.],
+  [Porter des gants de protection et un équipement de protection des yeux. Ne pas respirer les vapeurs. En cas de contact cutané, rincer abondamment à l'eau.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  2. MATÉRIEL ET RÉACTIFS
+// ════════════════════════════════════════════════════════════
+
+= Matériel et Réactifs
+
+== Appareillage
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, center, center),
+
+  [*Équipement*], [*Capacité / Portée*], [*Classe / Tolérance*], [*Norme de référence*],
+
+  [Spectrophotomètre moléculaire],
+  [540 nm],
+  [Résolution : ± 1 nm \ Reproductibilité : ± 0,005 Abs],
+  [—],
+
+  [Cuves d'absorption],
+  [10 mm et 40 mm],
+  [Tolérance de chemin optique : ± 0,02 mm],
+  [—],
+
+  [Burette de précision],
+  [10,0 mL],
+  [Classe A / ± 0,02 mL \ (graduation de 0,02 mL)],
+  [ISO 385],
+
+  [Pipettes jaugées],
+  [1,00 mL, 2,00 mL, 5,00 mL, 10,00 mL, 50,0 mL],
+  [Classe A / Tolérances conformes à la norme],
+  [ISO 648],
+
+  [Fioles jaugées],
+  [50 mL, 250 mL, 1 000 mL],
+  [Classe A / Tolérances conformes à la norme],
+  [ISO 1042],
+
+  [Papiers filtres en fibre de verre],
+  [—],
+  [Rétention des matières en suspension],
+  [—],
+)
+
+== Réactifs
+
+#table(
+  columns: (1.8fr, 1.2fr, 2.2fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, left, left),
+
+  [*Réactif*], [*Concentration*], [*Préparation / Pureté*], [*Conservation*],
+
+  [Eau purifiée (1)],
+  [—],
+  [Eau distillée ou de pureté équivalente, exempte de traces de nitrites.],
+  [À utiliser fraîchement préparée.],
+
+  [Acide orthophosphorique concentré (2)],
+  [~15 mol/L],
+  [Densité de *1,70 g/mL* (pureté analytique).],
+  [Flacon en verre d'origine.],
+
+  [Acide orthophosphorique dilué (3)],
+  [~1,5 mol/L],
+  [Ajouter doucement *25 mL* de solution (2) dans *150 mL ± 25 mL* d'eau purifiée (1). Refroidir, puis compléter à *250 mL* dans une fiole jaugée.],
+  [Flacon en verre brun. Stable pendant au moins 6 mois.],
+
+  [Réactif coloré (4)],
+  [—],
+  [Dissoudre *40,0 g ± 0,5 g* de sulfanilamide (aminobenzène sulfonamide) dans un mélange de *100 mL ± 1 mL* d'acide (2) et *500 mL ± 50 mL* d'eau (1). Ajouter *2,00 g ± 0,02 g* de dichlorhydrate de N-(1-naphtyl)éthylènediamine, dissoudre et compléter à *1 000 mL* dans une fiole jaugée.],
+  [Flacon en verre brun au réfrigérateur (*2 °C à 5 °C*). Stable 1 mois.],
+
+  [Nitrite de sodium, solution étalon stock (5)],
+  [~100 mg/L N],
+  [Sécher le nitrite de sodium ($"NaNO"_2$) anhydre à *105 °C* pendant au moins *2 heures*. Dissoudre *0,4922 g ± 0,0002 g* de sel dans environ *750 mL* d'eau (1), puis compléter à *1 000 mL* dans une fiole jaugée. Étalonner avant emploi.],
+  [Flacon en verre brun au réfrigérateur (*2 °C à 5 °C*). Stable 1 mois.],
+
+  [Nitrite de sodium, solution étalon de travail (6)],
+  [~1,00 mg/L N],
+  [Pipeter *10,00 mL* de la solution stock (5) dans une fiole jaugée de *1 000 mL* et compléter au volume avec de l'eau (1).],
+  [À préparer le jour de l'utilisation. Rejeter après emploi.],
+
+  [Permanganate de potassium (7)],
+  [0,010 mol/L ($c(1/5 "KMnO"_4)$)],
+  [Solution étalon de permanganate de potassium ($0,0020$ mol/L en $"KMnO"_4$).],
+  [Flacon en verre brun à l'obscurité. Stable plusieurs mois.],
+
+  [Acide sulfurique (8)],
+  [~2,5 mol/L],
+  [Ajouter lentement *140 mL* d'acide sulfurique concentré (densité 1,84 g/mL) à environ *800 mL* d'eau (1). Laisser refroidir et compléter à *1 000 mL* dans une fiole.],
+  [Flacon en verre ou PE. Stable plusieurs mois.],
+)
+
+// ════════════════════════════════════════════════════════════
+//  3. PRINCIPE DE LA MÉTHODE
+// ════════════════════════════════════════════════════════════
+
+= Principe de la Méthode
+
+La méthode repose sur la réaction des ions nitrites ($"NO"_2^-$) présents dans une prise d'essai avec le réactif sulfanilamide (aminobenzène sulfonamide) en milieu acide (pH *1,9 ± 0,1*) assuré par l'acide orthophosphorique. Cette étape forme un sel de diazoïque intermédiaire. 
+
+Celui-ci subit ensuite une réaction de couplage avec le dichlorhydrate de N-(1-naphtyl)éthylènediamine pour former un complexe azoïque soluble de coloration rose intense :
+
+$ "NO"_2^- + "H"_2"N-C"_6"H"_4"-SO"_2"NH"_2 + 2"H"^+ -> "N" equiv "N-C"_6"H"_4"-SO"_2"NH"_2^+ + 2"H"_2"O" $
+$ "N" equiv "N-C"_6"H"_4"-SO"_2"NH"_2^+ + "C"_10"H"_7"-NH-CH"_2"CH"_2"NH"_2 -> "Azoïque Rose" + "H"^+ $
+
+L'intensité de la coloration rose est proportionnelle à la concentration en nitrites. Le mesurage spectrophotométrique de l'absorbance est effectué à la longueur d'onde de sensibilité maximale, soit *540 nm*.
+
+// ════════════════════════════════════════════════════════════
+//  4. MODE OPÉRATOIRE
+// ════════════════════════════════════════════════════════════
+
+= Mode Opératoire
+
+#warn-box(title: "Contrôle critique du volume et du pH", [
+  - Le volume total avant l'ajout du réactif coloré doit impérativement être ajusté à *40 ± 2 mL* afin de garantir le maintien du pH à *1,9 ± 0,1*, nécessaire à la stabilité et à la cinétique de la réaction de diazotation.
+  - La verrerie doit être préalablement lavée à l'acide chlorhydrique (~2 mol/L) puis abondamment rincée à l'eau purifiée afin d'éliminer toute contamination par les nitrites.
+])
+
+== Étalonnage / Vérification de la Solution Stock de Nitrite (100 mg/L N)
++ #step(verb: "Pipeter")[*50,0 mL* de solution étalon de permanganate de potassium (7) dans une fiole conique de *250 mL*.]
++ #step(verb: "Ajouter")[*10 mL ± 1 mL* de solution d'acide sulfurique (8) dans la fiole conique.]
++ #step(verb: "Mélanger")[soigneusement le contenu de la fiole conique par rotation.]
++ #step(verb: "Remplir")[une burette de *50 mL* de classe A avec la solution stock de nitrite (5).]
++ #step(verb: "Ajuster")[l'extrémité de la burette de façon à ce qu'elle plonge directement sous la surface de la solution acide de permanganate contenue dans la fiole conique.]
++ #step(verb: "Titrer")[lentement la solution de permanganate avec la solution de nitrite jusqu'à sa décoloration presque complète.]
++ #step(verb: "Chauffer")[la solution à environ *40 °C* lorsque le point de virage est proche.]
++ #step(verb: "Poursuivre")[le titrage goutte à goutte et lentement jusqu'au virage complet à l'incolore.]
++ #step(verb: "Noter")[le volume de solution de nitrite consommé.]
++ #step(verb: "Vérifier")[si le volume consommé est de *35,02 mL ± 0,40 mL*.]
++ #step(verb: "Rejeter")[la solution stock et en préparer une nouvelle si le volume consommé sort de cette plage.]
+
+== Établissement de la Courbe d'Étalonnage
++ #step(verb: "Préparer")[une série de neuf fioles jaugées de *50 mL* numérotées de 1 à 9.]
++ #step(verb: "Introduire")[à l'aide d'une burette ou de pipettes de précision, les volumes suivants de la solution de travail de nitrite (6) :]
+  - Fiole 1 : *0,00 mL* (terme zéro)
+  - Fiole 2 : *0,50 mL* ($0,50$ µg de N)
+  - Fiole 3 : *1,00 mL* ($1,00$ µg de N)
+  - Fiole 4 : *1,50 mL* ($1,50$ µg de N)
+  - Fiole 5 : *2,00 mL* ($2,00$ µg de N)
+  - Fiole 6 : *2,50 mL* ($2,50$ µg de N)
+  - Fiole 7 : *5,00 mL* ($5,00$ µg de N)
+  - Fiole 8 : *7,50 mL* ($7,50$ µg de N)
+  - Fiole 9 : *10,00 mL* ($10,00$ µg de N)
++ #step(verb: "Compléter")[le volume avec de l'eau purifiée (1) dans chaque fiole pour obtenir *40 ± 2 mL*.]
++ #step(verb: "Ajouter")[*1,0 mL* de réactif coloré (4) à l'aide d'une pipette.]
++ #step(verb: "Homogénéiser")[immédiatement la solution par rotation de la fiole.]
++ #step(verb: "Ajuster")[au trait de jauge de *50 mL* avec de l'eau purifiée (1).]
++ #step(verb: "Homogénéiser")[soigneusement par retournements successifs.]
++ #step(verb: "Laisser reposer")[la fiole pendant au moins *20 minutes* à l'obscurité.]
++ #step(verb: "Mesurer")[l'absorbance des solutions d'étalonnage à *540 nm* contre l'eau purifiée (1) dans des cuves d'épaisseur adaptée :]
+  - Cuves de *40 mm* (ou *50 mm*) pour les fioles 1 à 6 (gamme de *0* µg à *2,50* µg de N).
+  - Cuves de *10 mm* pour les fioles 1, 3, 6, 7, 8 et 9 (gamme de *0* µg à *10,00* µg de N).
++ #step(verb: "Soustraire")[l'absorbance du terme zéro (fiole 1) des absorbances mesurées pour chaque solution d'étalonnage.]
++ #step(verb: "Tracer")[la courbe d'étalonnage représentant l'absorbance corrigée en fonction de la masse d'azote nitrique.]
++ #step(verb: "Vérifier")[la linéarité de la courbe et s'assurer qu'elle passe bien par l'origine.]
+
+== Analyse des Échantillons d'Eau
++ #step(verb: "Filtrer")[l'échantillon d'eau sur un papier filtre en fibre de verre en présence de matières en suspension (ou le laisser décanter).]
++ #step(verb: "Pipeter")[une prise d'essai de l'échantillon d'eau d'un volume $V$ (maximum *40 mL*) contenant moins de *10* µg de N.]
++ #step(verb: "Transférer")[la prise d'essai dans une fiole jaugée de *50 mL*.]
++ #step(verb: "Ajuster")[le volume à *40 ± 2 mL* avec de l'eau purifiée (1) si nécessaire.]
++ #step(verb: "Ajouter")[*1,0 mL* de réactif coloré (4) à l'aide d'une pipette.]
++ #step(verb: "Homogénéiser")[immédiatement la fiole par rotation.]
++ #step(verb: "Compléter")[au trait de jauge de *50 mL* avec de l'eau purifiée (1).]
++ #step(verb: "Homogénéiser")[soigneusement par retournements successifs.]
++ #step(verb: "Laisser reposer")[la solution pendant au moins *20 minutes* à l'obscurité.]
++ #step(verb: "Mesurer")[l'absorbance de la solution d'essai à *540 nm* contre l'eau purifiée (1) dans une cuve de même épaisseur que celle utilisée pour l'étalonnage.]
++ #step(verb: "Noter")[la valeur d'absorbance obtenue, désignée par $A_s$.]
+
+== Essai à Blanc de la Méthode
++ #step(verb: "Pipeter")[*40 ± 2 mL* d'eau purifiée (1) dans une fiole jaugée de *50 mL*.]
++ #step(verb: "Ajouter")[*1,0 mL* de réactif coloré (4) à l'aide d'une pipette.]
++ #step(verb: "Homogénéiser")[immédiatement la fiole par rotation.]
++ #step(verb: "Compléter")[au trait de jauge de *50 mL* avec de l'eau purifiée (1).]
++ #step(verb: "Homogénéiser")[soigneusement par retournements successifs.]
++ #step(verb: "Laisser reposer")[la fiole pendant au moins *20 minutes* à l'obscurité.]
++ #step(verb: "Mesurer")[l'absorbance de la solution de blanc à *540 nm* contre l'eau purifiée (1) dans une cuve de même épaisseur.]
++ #step(verb: "Noter")[la valeur d'absorbance obtenue, désignée par $A_b$.]
+
+== Correction pour la Couleur de l'Échantillon (Optionnel)
++ #step(verb: "Pipeter")[une deuxième prise d'essai de même volume $V$ de l'échantillon d'eau dans une fiole jaugée de *50 mL*.]
++ #step(verb: "Ajuster")[le volume à *40 ± 2 mL* avec de l'eau purifiée (1) si nécessaire.]
++ #step(verb: "Ajouter")[*1,0 mL* d'acide orthophosphorique dilué (3) au lieu du réactif coloré (4).]
++ #step(verb: "Homogénéiser")[immédiatement la fiole par rotation.]
++ #step(verb: "Compléter")[au trait de jauge de *50 mL* avec de l'eau purifiée (1).]
++ #step(verb: "Homogénéiser")[soigneusement par retournements successifs.]
++ #step(verb: "Laisser reposer")[la fiole pendant au moins *20 minutes* à l'obscurité.]
++ #step(verb: "Mesurer")[l'absorbance de la solution de correction à *540 nm* contre l'eau purifiée (1) dans une cuve de même épaisseur.]
++ #step(verb: "Noter")[la valeur d'absorbance obtenue, désignée par $A_c$.]
+
+// ════════════════════════════════════════════════════════════
+//  5. EXPRESSION DES RÉSULTATS
+// ════════════════════════════════════════════════════════════
+
+= Expression des Résultats
+
+== Calculs
+
+=== Absorbance Corrigée ($A_r$)
+
+L'absorbance corrigée $A_r$ de la solution d'essai est calculée selon l'un des cas suivants :
+* Sans correction pour la couleur de l'échantillon :
+  #align(center)[#block(stroke: 0.5pt, inset: (x: 20pt, y: 12pt))[$ A_r = A_s - A_b $]]
+* Avec correction pour la couleur de l'échantillon :
+  #align(center)[#block(stroke: 0.5pt, inset: (x: 20pt, y: 12pt))[$ A_r = A_s - A_b - A_c $]]
+
+Avec :
+- $A_s$ : absorbance mesurée de la solution d'essai ;
+- $A_b$ : absorbance mesurée de la solution d'essai à blanc ;
+- $A_c$ : absorbance mesurée de la solution de correction pour la couleur.
+
+=== Concentration en Masse de l'Azote Nitrique ($rho_"N"$)
+
+Déterminer la masse $m_"N"$ de nitrite (exprimée en microgrammes d'azote) correspondant à l'absorbance corrigée $A_r$ au moyen de la courbe d'étalonnage pour l'épaisseur de cuve correspondante.
+
+La concentration en masse d'azote de nitrites, $rho_"N"$, exprimée en milligrammes par litre, est calculée par la formule :
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ rho_"N" = m_"N" / V $
+  ]
+]
+
+Avec :
+- $rho_"N"$ : concentration en masse de nitrites, exprimée en milligrammes d'azote par litre [mg/L N] ;
+- $m_"N"$ : masse de nitrite, exprimée en microgrammes d'azote, lue sur la courbe d'étalonnage [µg] ;
+- $V$ : volume de la prise d'essai d'échantillon d'eau [mL].
+
+== Facteurs de Conversion
+
+Les résultats peuvent être exprimés selon d'autres unités en utilisant les facteurs de conversion du tableau ci-dessous :
+
+#table(
+  columns: (auto, 1.2fr, 1.2fr, 1.2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 10pt, y: 6pt),
+  align: (center, center, center, center),
+
+  [*Unité de départ*], [*$rho_"N"$ (mg/L)*], [*$rho_("NO"_2^-)$ (mg/L)*], [*$c("NO"_2^-)$ (µmol/L)*],
+  [*$rho_"N"$ = 1 mg/L*], [1], [3,29], [71,4],
+  [*$rho_("NO"_2^-)$ = 1 mg/L*], [0,304], [1], [21,7],
+  [*$c("NO"_2^-)$ = 1 µmol/L*], [0,014], [0,046], [1],
+)
+
+#note-box([
+  Exemple : Une concentration d'azote nitrique de *1,00 mg/L N* correspond à une concentration d'ions nitrites de *3,29 mg/L* de $"NO"_2^-$.
+])
+
+// ════════════════════════════════════════════════════════════
+//  6. RÉFÉRENCES NORMATIVES
+// ════════════════════════════════════════════════════════════
+
+= Références Normatives
+
+- *ISO 6777:1984* : Qualité de l'eau — Dosage des nitrites — Méthode par spectrométrie d'absorption moléculaire.
+- *ISO 385* : Verrerie de laboratoire — Burettes.
+- *ISO 648* : Verrerie de laboratoire — Pipettes à un trait.
+- *ISO 1042* : Verrerie de laboratoire — Fioles jaugées.
+- *ISO 3696* : Eau pour laboratoire à usage analytique — Spécification et méthodes d'essai.
+- *ISO/CEI 17025* : Exigences générales concernant la compétence des laboratoires d'étalonnage et d'essais.

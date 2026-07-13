@@ -90,16 +90,36 @@ def find_or_create_folder(name: str, parent_id: str | None = None) -> tuple[str,
     return data["id"], True
 
 
-def upload_pdf(path: Path, parent_id: str) -> str:
-    """Upload a PDF file into a Drive folder and return the file's ID."""
-    body = {"name": path.name, "parents": [parent_id]}
-    data = _gws(
-        "create",
-        "--upload", str(path),
-        "--upload-content-type", PDF_MIME,
-        "--json", json.dumps(body),
-    )
-    return data["id"]
+def find_file(name: str, parent_id: str) -> str | None:
+    """Search for an existing file by name inside a Drive folder. Returns ID or None."""
+    q = f"name = '{name}' and '{parent_id}' in parents and trashed = false and mimeType != '{FOLDER_MIME}'"
+    params = json.dumps({"q": q})
+    data = _gws("list", "--params", params)
+    files = data.get("files", [])
+    return files[0]["id"] if files else None
+
+
+def upsert_pdf(path: Path, parent_id: str) -> tuple[str, bool]:
+    """Upload or update a PDF. Returns (file_id, was_updated)."""
+    existing_id = find_file(path.name, parent_id)
+    if existing_id:
+        # Update content of existing file in-place
+        data = _gws(
+            "update",
+            "--params", json.dumps({"fileId": existing_id}),
+            "--upload", str(path),
+            "--upload-content-type", PDF_MIME,
+        )
+        return data["id"], True
+    else:
+        body = {"name": path.name, "parents": [parent_id]}
+        data = _gws(
+            "create",
+            "--upload", str(path),
+            "--upload-content-type", PDF_MIME,
+            "--json", json.dumps(body),
+        )
+        return data["id"], False
 
 
 # ── Discovery ─────────────────────────────────────────────────────────────────
@@ -176,11 +196,12 @@ def main() -> None:
                 progress.advance(overall, len(pdfs))
                 continue
 
-            # Upload each PDF
+            # Upload or update each PDF
             for pdf in pdfs:
                 try:
-                    file_id = upload_pdf(pdf, module_id)
-                    progress.print(f"  [green]✓[/green] {pdf.name} [dim]({file_id})[/dim]")
+                    file_id, was_updated = upsert_pdf(pdf, module_id)
+                    action = "[yellow]↑ updated[/yellow]" if was_updated else "[green]+ created[/green]"
+                    progress.print(f"  {action} {pdf.name} [dim]({file_id})[/dim]")
                     uploaded += 1
                 except RuntimeError as e:
                     progress.print(f"  [red]✗[/red] {pdf.name}: {e}")

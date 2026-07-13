@@ -15,17 +15,25 @@ Internship-PFA/
 │   ├── GHS03.svg, GHS05.svg, ...
 │   └── README.md                              # Guide d'utilisation et de correspondance des symboles GHS
 │
-├── 01_Dosage_Chlorures_Mohr/                  # Module : Dosage des ions chlorure (Méthode de Mohr / ISO 9297)
-│   ├── references/                            # Norme ISO officielle et notes théoriques
-│   │   ├── iso_9297_1989.pdf                  # Norme ISO 9297 de référence
-│   │   └── notes_iso_9297_dosage_chlorures.pdf# Synthèse et notes de lecture de la norme
-│   └── protocole/                             # Protocole expérimental rédigé
-│       ├── dosage_chlorures.typst             # Document source Typst
-│       ├── dosage_chlorures.pdf               # Rendu PDF compilé
-│       └── fiche_protocole_mohr_iso_9297.pdf  # Fiche pratique de paillasse
+├── 01_Dosage_Chlorures_Mohr/                  # Module 01 : Dosage des chlorures (Mohr / ISO 9297)
+│   ├── references/                            # Normes de référence et notes de lecture
+│   └── protocole/                             # Protocoles et fiches de paillasse
 │
-└── 02_Administratif_et_Suivi/                  # Suivi administratif du stage et de la rédaction
-    └── journal_de_bord.md                     # Carnet de suivi hebdomadaire des tâches de stage
+├── 02_Determination_Indice_Permanganate/      # Module 02 : Indice Permanganate (ISO 8467)
+│   ├── references/
+│   └── protocole/
+│
+├── 03_Determination_de_Lalcalinite/          # Module 03 : Titrage de l'Alcalinité (ISO 9963-1 & 2)
+│   ├── references/
+│   └── protocole/
+│
+├── 04_Dosage_Nitrites_Spectrometrie/          # Module 04 : Dosage des Nitrites par Spectrométrie (ISO 6777)
+│   ├── references/
+│   └── protocole/
+│
+└── 05_Dosage_Sulfates_Nephelometrie/          # Module 05 : Dosage des Sulfates par Néphélométrie (NF T 90-040)
+    ├── references/                            # Norme NF T 90-040 de référence
+    └── protocole/                             # Protocole de paillasse et flowcharts (à rédiger)
 ```
 
 ---

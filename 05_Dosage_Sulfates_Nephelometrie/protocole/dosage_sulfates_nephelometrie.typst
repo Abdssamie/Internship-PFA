@@ -1,0 +1,404 @@
+// ============================================================
+//  PROTOCOLE D'ANALYSE — DOSAGE DES IONS SULFATES
+//  Méthode Néphélométrique
+//  Référence normative : NF T 90-040 (Septembre 1986)
+// ============================================================
+
+// ── Global page settings ────────────────────────────────────
+#set page(
+  paper: "a4",
+  margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
+  numbering: "1 / 1",
+  number-align: right,
+  header: [
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[Dosage des Sulfates dans l'Eau (NF T 90-040)],
+      align(right)[Réf. : *PRO-CHM-008* | Rév. : *1.0*],
+    )
+    #line(length: 100%, stroke: 0.5pt)
+  ],
+  footer: [
+    #line(length: 100%, stroke: 0.5pt)
+    #set text(size: 8pt)
+    #align(center)[#context [Page #counter(page).display() / #counter(page).final().first()]]
+  ],
+)
+
+// ── Typography ───────────────────────────────────────────────
+#set text(font: "STIX Two Text", size: 10.5pt, lang: "fr")
+#show math.equation: set text(font: "STIX Two Math")
+#show raw: set text(font: "Source Code Pro", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set heading(numbering: "1.1.1")
+
+// ── Reusable components ─────────────────────────────────────
+
+// Section heading: full-width rule above, bold black text
+#show heading.where(level: 1): it => {
+  v(1.2em)
+  line(length: 100%, stroke: 1pt)
+  block(above: 0.4em, below: 0.6em)[
+    #set text(size: 13pt, weight: "bold")
+    #it
+  ]
+}
+
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  block(below: 0.4em)[
+    #set text(size: 11pt, weight: "bold")
+    #it
+  ]
+}
+
+// Safety callout — left thick rule, black border, no fill
+#let safety-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: 0.5pt),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚠ #title] \
+    #content
+  ]
+}
+
+// Warning callout — same structure, dashed border
+#let warn-box(title: "", content) = {
+  block(
+    width: 100%,
+    stroke: (left: 3pt, rest: (dash: "dashed", thickness: 0.5pt)),
+    inset: (x: 10pt, y: 8pt),
+  )[
+    #text(weight: "bold")[⚑ #title] \
+    #content
+  ]
+}
+
+// Informational note — indented, thin border
+#let note-box(content) = {
+  block(
+    width: 100%,
+    stroke: (left: 1.5pt, rest: none),
+    inset: (left: 12pt, right: 0pt, y: 4pt),
+  )[
+    #text(weight: "bold")[Note :] #content
+  ]
+}
+
+// Numbered procedure step — bold action verb
+#let step(verb: "", rest) = {
+  block(below: 0.5em)[
+    *#verb* #rest
+  ]
+}
+
+// ════════════════════════════════════════════════════════════
+//  ① DOCUMENT HEADER — Identification & Traceabilité
+// ════════════════════════════════════════════════════════════
+
+// ── Title block ──────────────────────────────────────────────
+#line(length: 100%, stroke: 1.5pt)
+#v(0.4em)
+#align(center)[
+  #text(size: 16pt, weight: "bold")[Dosage des Ions Sulfates dans l'Eau] \
+  #v(4pt)
+  #text(size: 11pt)[Méthode Néphélométrique — Norme NF T 90-040 (Septembre 1986)]
+]
+#v(0.4em)
+#line(length: 100%, stroke: 1.5pt)
+
+#v(0.8em)
+
+// ── Identification table ─────────────────────────────────────
+#show table.cell: set text(hyphenate: false)
+#table(
+  columns: (auto, 1fr, auto, 1fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+
+  // Row 1
+  [*Référence*],
+  [PRO-CHM-008],
+  [*Révision*],
+  [1.0],
+
+  // Row 2
+  [*Date d'application*],
+  [12/07/2026],
+  [*Statut*],
+  [En vigueur],
+
+  // Row 3
+  [*Rédigé par*],
+  table.cell(colspan: 3)[Abdessamie El Moubarki],
+
+  // Row 4
+  [*Domaine d'application*],
+  table.cell(colspan: 3)[
+    Eaux limpides et non colorées (eaux potables, eaux de surface). \
+    Plage de mesure : *5 mg/L à 40 mg/L* d'ions sulfates ($"SO"_4^(2-)$). Les échantillons plus concentrés peuvent être analysés après dilution adéquate.
+  ],
+)
+
+#v(1em)
+
+// ════════════════════════════════════════════════════════════
+//  1. SÉCURITÉ ET PRÉVENTION DES RISQUES
+// ════════════════════════════════════════════════════════════
+
+= Sécurité et Prévention des Risques
+
+// GHS pictogram helper — renders one SVG icon at 30pt
+#let ghs(code) = image(
+  "../../GHS_Pictogrammes/" + code + ".svg",
+  width: 30pt,
+)
+
+// Inline row of icons with a small gap
+#let icons(..codes) = {
+  for c in codes.pos() { box(ghs(c)); h(3pt) }
+}
+
+#table(
+  columns: (1.8fr, auto, 2fr, 2fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 10pt),
+  align: (left, center, left, left),
+
+  [*Produit chimique*], [*Pictogramme(s) GHS*], [*Mentions de danger*], [*Conseils de prudence*],
+
+  // Acide chlorhydrique
+  [Acide chlorhydrique \ $"HCl"$ \ (solution à 10% V/V)],
+  [#icons("GHS05", "GHS07")],
+  [Provoque de graves brûlures de la peau et des lésions oculaires graves. Peut irriter les voies respiratoires.],
+  [Porter des gants de protection, des vêtements de protection et un équipement de protection des yeux. Éviter de respirer les vapeurs. En cas de contact, rincer abondamment à l'eau.],
+
+  // Chlorure de baryum dihydraté
+  [Chlorure de baryum \ $"BaCl"_2 · 2"H"_2"O"$ \ (solution stabilisée à 10% m/V)],
+  [#icons("GHS07")],
+  [Toxique en cas d'ingestion. Nocif par inhalation.],
+  [Se laver les mains soigneusement après manipulation. Ne pas manger, boire ou fumer en manipulant ce produit. Éviter de respirer les poussières/brouillards.],
+
+  // Sulfate de sodium
+  [Sulfate de sodium anhydre \ $"Na"_2"SO"_4$],
+  [—],
+  [Non classé comme dangereux selon le règlement CLP.],
+  [Manipuler conformément aux bonnes pratiques d'hygiène industrielle. Éviter la formation de poussières.],
+
+  // Agent stabilisant
+  [Tween 20 ou PVP \ (Polyvinylpyrrolidone)],
+  [—],
+  [Non classé comme dangereux selon le règlement CLP.],
+  [Porter un équipement de protection individuel standard. Éviter le contact direct avec les yeux.]
+)
+
+// ════════════════════════════════════════════════════════════
+//  2. MATÉRIEL ET RÉACTIFS
+// ════════════════════════════════════════════════════════════
+
+= Matériel et Réactifs
+
+== Appareillage
+
+#table(
+  columns: (2.5fr, 1.2fr, 1.5fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, center, center),
+
+  [*Équipement*], [*Capacité / Portée*], [*Classe / Tolérance*], [*Norme de référence*],
+
+  [Spectrophotomètre ou Néphélomètre],
+  [650 nm],
+  [Résolution : ± 1 nm \ Reproductibilité : ± 0,005 Abs],
+  [—],
+
+  [Cuves d'absorption],
+  [10 mm],
+  [Tolérance de chemin optique : ± 0,02 mm],
+  [—],
+
+  [Pipettes jaugées],
+  [1,00 mL, 3,00 mL, 5,00 mL, 7,00 mL, 9,00 mL, 10,00 mL, 50,0 mL],
+  [Classe A / Tolérances conformes à la norme],
+  [ISO 648],
+
+  [Fioles jaugées],
+  [50 mL, 100 mL, 1 000 mL],
+  [Classe A / Tolérances conformes à la norme],
+  [ISO 1042],
+
+  [Burette de précision],
+  [10,0 mL],
+  [Classe A / ± 0,02 mL],
+  [ISO 385]
+)
+
+== Réactifs
+
+#table(
+  columns: (1.8fr, 1.2fr, 2.2fr, 1.8fr),
+  stroke: 0.5pt,
+  fill: none,
+  inset: (x: 8pt, y: 6pt),
+  align: (left, center, left, left),
+
+  [*Réactif*], [*Concentration*], [*Préparation / Pureté*], [*Conservation*],
+
+  [Eau distillée (1)],
+  [—],
+  [Eau distillée ou de pureté équivalente, exempte de sulfates.],
+  [Récipient en PE propre.],
+
+  [Acide chlorhydrique dilué (2)],
+  [10% (V/V)],
+  [Diluer *10 mL* d'acide chlorhydrique concentré ($d = 1,19$ g/mL) dans *90 mL* d'eau distillée (1).],
+  [Flacon en PE ou en verre. Stable.],
+
+  [Agent stabilisant (3)],
+  [25% (m/m)],
+  [Solution de polyvinylpyrrolidone (PVP) à *25%* ou dérivé polyéthoxylé du monolaurate de sorbitol (Tween 20).],
+  [Flacon étanche en PE ou en verre.],
+
+  [Solution de chlorure de baryum stabilisée (4)],
+  [10% (m/V)],
+  [Dissoudre *10 g* de chlorure de baryum dihydraté ($"BaCl"_2 · 2"H"_2"O"$) dans environ *80 mL* d'eau distillée (1). Ajouter *5 mL* de solution d'agent stabilisant (3) et compléter à *100 mL* avec de l'eau distillée (1) dans une fiole jaugée de *100 mL*.],
+  [Flacon en PE. Préparer régulièrement.],
+
+  [Solution mère étalon d'ions sulfates (5)],
+  [150 mg/L de $"SO"_4^(2-)$],
+  [Sécher le sulfate de sodium anhydre ($"Na"_2"SO"_4$) à *105 °C* pendant au moins *2 heures*. Dissoudre *0,2219 g ± 0,0002 g* de sel dans de l'eau distillée (1) et compléter à *1 000 mL* dans une fiole jaugée de *1 000 mL*.],
+  [Flacon en PE ou en verre. Stable 1 mois à *4 °C*.]
+)
+
+// ════════════════════════════════════════════════════════════
+//  3. PRINCIPE DE LA MÉTHODE
+// ════════════════════════════════════════════════════════════
+
+= Principe de la Méthode
+
+La méthode repose sur la précipitation des ions sulfates ($"SO"_4^(2-)$) sous forme de sulfate de baryum ($"BaSO"_4$) en milieu chlorhydrique, par l'ajout de chlorure de baryum :
+
+$ "SO"_4^(2-) + "Ba"^(2+) -> "BaSO"_4 arrow.b $
+
+L'acide chlorhydrique est ajouté pour éviter la précipitation d'autres sels de baryum potentiels (tels que le carbonate ou le phosphate de baryum). 
+
+Le précipité colloïdal de sulfate de baryum est stabilisé à l'aide d'un agent tensioactif ou stabilisant (polyvinylpyrrolidone ou Tween 20) afin de maintenir la suspension homogène et d'éviter la sédimentation rapide des particules de précipité.
+
+L'absorbance apparente (turbidité) de la suspension est mesurée par spectrophotométrie à la longueur d'onde de *650 nm*. La concentration en ions sulfates est déterminée par comparaison avec une courbe d'étalonnage établie sous les mêmes conditions.
+
+// ════════════════════════════════════════════════════════════
+//  4. MODE OPÉRATOIRE
+// ════════════════════════════════════════════════════════════
+
+= Mode Opératoire
+
+#warn-box(title: "Contrôle de la cinétique de précipitation", [
+  - L'ordre d'introduction des réactifs doit être scrupuleusement respecté afin d'assurer une nucléation uniforme et reproductible des cristaux de sulfate de baryum.
+  - Le temps de repos après agitation est un facteur critique : les mesures doivent être réalisées après un temps de repos fixe compris entre *15 minutes* et *20 minutes* pour garantir le développement et la stabilisation de la turbidité.
+])
+
+== Établissement de la Courbe d'Étalonnage
++ #step(verb: "Préparer")[une série de sept fioles jaugées de *50 mL* propres et sèches, numérotées de 1 à 7.]
++ #step(verb: "Introduire")[à l'aide d'une burette ou d'une pipette de précision, les volumes suivants de la solution mère étalon de sulfate (5) :]
+  - Fiole 1 : *0,00 mL* (solution témoin)
+  - Fiole 2 : *1,00 mL* (correspondant à *150 µg* de $"SO"_4^(2-)$, soit une concentration de *3 mg/L*)
+  - Fiole 3 : *3,00 mL* (correspondant à *450 µg* de $"SO"_4^(2-)$, soit une concentration de *9 mg/L*)
+  - Fiole 4 : *5,00 mL* (correspondant à *750 µg* de $"SO"_4^(2-)$, soit une concentration de *15 mg/L*)
+  - Fiole 5 : *7,00 mL* (correspondant à *1050 µg* de $"SO"_4^(2-)$, soit une concentration de *21 mg/L*)
+  - Fiole 6 : *9,00 mL* (correspondant à *1350 µg* de $"SO"_4^(2-)$, soit une concentration de *27 mg/L*)
+  - Fiole 7 : *10,00 mL* (correspondant à *1500 µg* de $"SO"_4^(2-)$, soit une concentration de *30 mg/L*)
++ #step(verb: "Ajouter")[dans chaque fiole jaugée de la gamme, à l'aide d'une pipette jaugée ou graduée, *1 mL* de la solution d'acide chlorhydrique à 10% (2).]
++ #step(verb: "Ajouter")[dans chaque fiole jaugée, *5 mL* de la solution de chlorure de baryum stabilisée (4).]
++ #step(verb: "Compléter")[au trait de jauge de *50 mL* avec de l'eau distillée (1).]
++ #step(verb: "Agiter")[manuellement chaque fiole jaugée deux ou trois fois par retournements successifs pour bien homogénéiser.]
++ #step(verb: "Laisser reposer")[les fioles pendant au moins *15 minutes* à température ambiante pour permettre le développement du précipité.]
++ #step(verb: "Agiter")[à nouveau chaque fiole avant la mesure pour remettre en suspension les particules déposées.]
++ #step(verb: "Mesurer")[l'absorbance apparente (turbidité) de chaque solution à *650 nm* dans une cuve de *10 mm* en utilisant de l'eau distillée (1) comme référence.]
++ #step(verb: "Tracer")[la courbe d'étalonnage de l'absorbance apparente corrigée (absorbance de l'étalon moins l'absorbance du témoin) en fonction de la concentration en ions sulfates en milligrammes par litre.]
++ #step(verb: "Vérifier")[que la courbe est linéaire dans la zone de concentration de *5 mg/L à 40 mg/L*.]
+
+== Analyse des Échantillons d'Eau
++ #step(verb: "Prétraiter")[l'échantillon d'eau par centrifugation ou filtration s'il présente des matières en suspension ou une turbidité initiale.]
++ #step(verb: "Pipeter")[une prise d'essai de l'échantillon d'eau d'un volume de *50,0 mL* (ou moins si la concentration estimée dépasse *40 mg/L* ; dans ce cas, compléter à *50,0 mL* avec de l'eau distillée).]
++ #step(verb: "Transférer")[la prise d'essai dans une fiole jaugée de *50 mL* propre.]
++ #step(verb: "Ajouter")[*1 mL* de solution d'acide chlorhydrique à 10% (2).]
++ #step(verb: "Ajouter")[*5 mL* de solution de chlorure de baryum stabilisée (4).]
++ #step(verb: "Homogénéiser")[vigoureusement par agitation manuelle.]
++ #step(verb: "Laisser reposer")[la fiole pendant au moins *15 minutes*.]
++ #step(verb: "Agiter")[à nouveau la fiole pour remettre en suspension le précipité.]
++ #step(verb: "Mesurer")[l'absorbance apparente à *650 nm* dans des conditions identiques à celles utilisées pour l'étalonnage.]
++ #step(verb: "Noter")[la valeur d'absorbance obtenue pour l'échantillon.]
+
+== Essai à Blanc de la Méthode
++ #step(verb: "Pipeter")[*50,0 mL* d'eau distillée (1) dans une fiole jaugée de *50 mL*.]
++ #step(verb: "Ajouter")[*1 mL* de solution d'acide chlorhydrique à 10% (2).]
++ #step(verb: "Ajouter")[*5 mL* de solution de chlorure de baryum stabilisée (4).]
++ #step(verb: "Homogénéiser")[soigneusement par retournements successifs.]
++ #step(verb: "Laisser reposer")[la fiole pendant au moins *15 minutes*.]
++ #step(verb: "Agiter")[à nouveau la solution.]
++ #step(verb: "Mesurer")[l'absorbance apparente du blanc de la méthode à *650 nm* contre de l'eau distillée (1).]
++ #step(verb: "Noter")[la valeur d'absorbance obtenue pour le blanc.]
+
+// ════════════════════════════════════════════════════════════
+//  5. EXPRESSION DES RÉSULTATS
+// ════════════════════════════════════════════════════════════
+
+= Expression des Résultats
+
+== Calculs
+
+=== Absorbance Corrigée ($A_r$)
+
+L'absorbance corrigée $A_r$ liée uniquement au précipité de sulfate de baryum est calculée comme suit :
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 12pt),
+  )[
+    $ A_r = A_s - A_b $
+  ]
+]
+
+Avec :
+- $A_s$ : absorbance apparente mesurée pour la solution d'essai de l'échantillon ;
+- $A_b$ : absorbance apparente mesurée pour la solution du blanc de la méthode.
+
+=== Concentration en Ions Sulfates ($C$)
+
+Déterminer à partir de la courbe d'étalonnage la concentration en sulfates correspondant à l'absorbance corrigée $A_r$.
+
+La concentration en masse de sulfates dans l'échantillon d'eau, $C$, exprimée en milligrammes par litre, est calculée par la formule :
+
+#align(center)[
+  #block(
+    stroke: 0.5pt,
+    inset: (x: 20pt, y: 14pt),
+  )[
+    $ C = C_"graph" times (50 / V_"essai") $
+  ]
+]
+
+Avec :
+- $C$ : concentration en ions sulfates de l'échantillon, exprimée en milligrammes par litre [mg/L $"SO"_4^(2-)$] ;
+- $C_"graph"$ : concentration en ions sulfates lue sur la courbe d'étalonnage, exprimée en milligrammes par litre [mg/L] ;
+- $V_"essai"$ : volume de la prise d'essai de l'échantillon d'eau utilisé pour le dosage, exprimé en millilitres [mL] (généralement *50,0 mL*).
+
+// ════════════════════════════════════════════════════════════
+//  6. RÉFÉRENCES NORMATIVES
+// ════════════════════════════════════════════════════════════
+
+= Références Normatives
+
+- *NF T 90-040 (Septembre 1986)* : Essais des eaux — Dosage des ions sulfates — Méthode néphélométrique.
+- *ISO 648* : Verrerie de laboratoire — Pipettes à un seul volume (Classe A).
+- *ISO 1042* : Verrerie de laboratoire — Fioles jaugées à un seul trait (Classe A).
+- *ISO 385* : Verrerie de laboratoire — Burettes (Classe A).
+- *ISO/CEI 17025* : Exigences générales concernant la compétence des laboratoires d'étalonnage et d'essais.

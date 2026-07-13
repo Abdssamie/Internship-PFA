@@ -24,8 +24,7 @@ Usage:
     uv run upload_protocols_to_drive.py
 
 Optional env var:
-    DRIVE_ROOT_FOLDER_ID=<id>   Upload inside a specific Drive folder
-                                instead of My Drive root.
+    DRIVE_ROOT_FOLDER_ID=<id>   Override the default shared root folder ID.
 """
 
 import json
@@ -44,6 +43,7 @@ console = Console()
 
 REPO_ROOT = Path(__file__).parent.resolve()
 ROOT_FOLDER_NAME = "Internship-PFA"
+DEFAULT_ROOT_FOLDER_ID = "1ZPyiox4zhwqQCtsJczM7C-AYsFcNp_9G"  # Shared Drive folder
 PDF_MIME = "application/pdf"
 FOLDER_MIME = "application/vnd.google-apps.folder"
 
@@ -72,7 +72,8 @@ def find_folder(name: str, parent_id: str | None = None) -> str | None:
     if parent_id:
         q_parts.append(f"'{parent_id}' in parents")
     q = " and ".join(q_parts)
-    data = _gws("list", "--query", q)
+    params = json.dumps({"q": q})
+    data = _gws("list", "--params", params)
     files = data.get("files", [])
     return files[0]["id"] if files else None
 
@@ -140,16 +141,12 @@ def main() -> None:
     console.print(table)
     console.print(f"\n[bold]{total_pdfs}[/bold] PDFs across [bold]{len(modules)}[/bold] modules.\n")
 
-    # Root Drive folder
-    parent_id: str | None = os.environ.get("DRIVE_ROOT_FOLDER_ID") or None
-    console.print(f"[dim]Finding or creating root Drive folder:[/dim] [bold]{ROOT_FOLDER_NAME}[/bold]")
-    try:
-        root_id, created = find_or_create_folder(ROOT_FOLDER_NAME, parent_id)
-    except RuntimeError as e:
-        console.print(f"[red]✗ Could not find/create root folder:[/red] {e}")
-        sys.exit(1)
-    action = "Created" if created else "Reusing existing"
-    console.print(f"  [green]✓[/green] {action} root folder ID: [dim]{root_id}[/dim]\n")
+    # Root Drive folder — use the known shared folder ID directly
+    root_id: str = os.environ.get("DRIVE_ROOT_FOLDER_ID") or DEFAULT_ROOT_FOLDER_ID
+    console.print(
+        f"[dim]Using root Drive folder:[/dim] [bold]{ROOT_FOLDER_NAME}[/bold] "
+        f"[dim](ID: {root_id})[/dim]\n"
+    )
 
     # Upload per module
     errors: list[str] = []

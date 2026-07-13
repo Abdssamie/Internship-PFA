@@ -15,7 +15,7 @@ Drive structure created:
     Internship-PFA/
     ├── 01_Dosage_Chlorures_Mohr/
     │   ├── dosage_chlorures.pdf
-    │   └── flowchart.pdf
+    │   └── logigramme.pdf
     ├── 02_Determination_Indice_Permanganate/
     │   └── ...
     └── ...
@@ -66,14 +66,27 @@ def _gws(*args: str) -> dict:
     return data
 
 
-def create_folder(name: str, parent_id: str | None = None) -> str:
-    """Create a Drive folder and return its ID."""
+def find_folder(name: str, parent_id: str | None = None) -> str | None:
+    """Search Drive for an existing folder by name (and optional parent). Returns ID or None."""
+    q_parts = [f"name = '{name}'", f"mimeType = '{FOLDER_MIME}'", "trashed = false"]
+    if parent_id:
+        q_parts.append(f"'{parent_id}' in parents")
+    q = " and ".join(q_parts)
+    data = _gws("list", "--query", q)
+    files = data.get("files", [])
+    return files[0]["id"] if files else None
+
+
+def find_or_create_folder(name: str, parent_id: str | None = None) -> tuple[str, bool]:
+    """Return (folder_id, created) — reuses existing folder if found, creates otherwise."""
+    existing_id = find_folder(name, parent_id)
+    if existing_id:
+        return existing_id, False
     body: dict = {"name": name, "mimeType": FOLDER_MIME}
     if parent_id:
         body["parents"] = [parent_id]
-
     data = _gws("create", "--json", json.dumps(body))
-    return data["id"]
+    return data["id"], True
 
 
 def upload_pdf(path: Path, parent_id: str) -> str:
@@ -129,13 +142,14 @@ def main() -> None:
 
     # Root Drive folder
     parent_id: str | None = os.environ.get("DRIVE_ROOT_FOLDER_ID") or None
-    console.print(f"[dim]Creating root Drive folder:[/dim] [bold]{ROOT_FOLDER_NAME}[/bold]")
+    console.print(f"[dim]Finding or creating root Drive folder:[/dim] [bold]{ROOT_FOLDER_NAME}[/bold]")
     try:
-        root_id = create_folder(ROOT_FOLDER_NAME, parent_id)
+        root_id, created = find_or_create_folder(ROOT_FOLDER_NAME, parent_id)
     except RuntimeError as e:
-        console.print(f"[red]✗ Could not create root folder:[/red] {e}")
+        console.print(f"[red]✗ Could not find/create root folder:[/red] {e}")
         sys.exit(1)
-    console.print(f"  [green]✓[/green] Root folder ID: [dim]{root_id}[/dim]\n")
+    action = "Created" if created else "Reusing existing"
+    console.print(f"  [green]✓[/green] {action} root folder ID: [dim]{root_id}[/dim]\n")
 
     # Upload per module
     errors: list[str] = []
@@ -154,12 +168,13 @@ def main() -> None:
         for module, pdfs in modules.items():
             progress.print(f"\n[bold]{module}[/bold]")
 
-            # Create module sub-folder
+            # Find or create module sub-folder
             try:
-                module_id = create_folder(module, root_id)
-                progress.print(f"  [dim]Folder ID: {module_id}[/dim]")
+                module_id, mod_created = find_or_create_folder(module, root_id)
+                mod_action = "Created" if mod_created else "Reusing"
+                progress.print(f"  [dim]{mod_action} folder ID: {module_id}[/dim]")
             except RuntimeError as e:
-                progress.print(f"  [red]✗ Folder creation failed:[/red] {e}")
+                progress.print(f"  [red]✗ Folder error:[/red] {e}")
                 errors.append(f"{module}/ — folder: {e}")
                 progress.advance(overall, len(pdfs))
                 continue
